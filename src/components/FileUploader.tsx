@@ -45,12 +45,14 @@ export default function FileUploader({
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 自动检测上传区域文字是否被遮挡
+  // 自动检测上传区域文字是否被遮挡，并自动调整容器高度
   useTextOverflowDetection({
     containerSelector: '.upload-zone',
     textSelector: '.upload-info',
     minPaddingBottom: 40,
+    minPaddingTop: 32,
     checkInterval: 500,
+    adjustHeight: true,  // 启用自动高度调整
     debug: false, // 设为 true 可在控制台查看调试信息
   });
 

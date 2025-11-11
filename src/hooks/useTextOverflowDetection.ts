@@ -1,11 +1,12 @@
 /**
- * 自动检测文字是否被框遮挡的 Hook
+ * 自动检测文字是否被框遮挡的 Hook（增强版）
  *
  * 原理:
  * 1. 监听容器和文字元素的尺寸变化
- * 2. 计算文字元素的底部位置
- * 3. 如果文字超出容器底部，自动增加容器的 padding-bottom
- * 4. 支持响应式调整
+ * 2. 计算文字元素所需的容器高度
+ * 3. 如果当前高度不足，自动增加容器的 min-height
+ * 4. 自动调整 padding 保持视觉平衡
+ * 5. 支持响应式调整
  */
 
 import { useEffect, useRef, useState } from 'react';
@@ -14,7 +15,9 @@ interface TextOverflowConfig {
   containerSelector: string;      // 容器选择器（如 '.upload-zone'）
   textSelector: string;            // 文字元素选择器（如 '.upload-info'）
   minPaddingBottom?: number;       // 最小底部 padding（默认 40px）
+  minPaddingTop?: number;          // 最小顶部 padding（默认 32px）
   checkInterval?: number;          // 检查间隔时间（默认 500ms）
+  adjustHeight?: boolean;          // 是否自动调整高度（默认 true）
   debug?: boolean;                 // 是否输出调试信息
 }
 
@@ -22,13 +25,17 @@ export function useTextOverflowDetection({
   containerSelector,
   textSelector,
   minPaddingBottom = 40,
+  minPaddingTop = 32,
   checkInterval = 500,
+  adjustHeight = true,
   debug = false,
 }: TextOverflowConfig) {
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [adjustedHeight, setAdjustedHeight] = useState<number | null>(null);
   const [adjustedPadding, setAdjustedPadding] = useState<number | null>(null);
   const checkTimeoutRef = useRef<NodeJS.Timeout>();
   const observerRef = useRef<ResizeObserver>();
+  const originalMinHeightRef = useRef<string>('');
 
   // 执行检测逻辑
   const checkTextOverflow = () => {
@@ -40,49 +47,94 @@ export function useTextOverflowDetection({
       return;
     }
 
-    // 获取元素的边界矩形
+    // 保存原始的 min-height（仅第一次）
+    if (!originalMinHeightRef.current) {
+      originalMinHeightRef.current = window.getComputedStyle(container).minHeight;
+    }
+
+    // 获取元素的位置和尺寸信息（相对于 container 内部坐标）
     const containerRect = container.getBoundingClientRect();
     const textRect = textElement.getBoundingClientRect();
 
-    // 计算文字底部相对于容器底部的距离
-    // 负数表示文字超出容器底部
+    // 计算文字相对于容器的位置
+    const textTopInContainer = textRect.top - containerRect.top;
+    const textBottomInContainer = textRect.bottom - containerRect.top;
+    const textHeight = textRect.height;
+
+    // 获取容器的 padding
+    const computedStyle = window.getComputedStyle(container);
+    const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+    const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+    const currentMinHeight = containerRect.height;
+
+    // 计算需要的最小高度：
+    // = 顶部 padding + 文字距离顶部的距离 + 文字高度 + 底部 padding
+    const requiredHeight = paddingTop + textBottomInContainer + minPaddingBottom;
+
     const bottomGap = containerRect.bottom - textRect.bottom;
+    const topGap = textRect.top - containerRect.top - paddingTop;
 
     if (debug) {
-      console.log(`[TextOverflow] 检测结果:`, {
+      console.log(`[TextOverflow] 详细检测:`, {
         containerHeight: containerRect.height,
-        textBottom: textRect.bottom,
-        containerBottom: containerRect.bottom,
+        textHeight: textHeight.toFixed(2),
+        textTopInContainer: textTopInContainer.toFixed(2),
+        textBottomInContainer: textBottomInContainer.toFixed(2),
+        paddingTop: paddingTop,
+        paddingBottom: paddingBottom,
+        requiredHeight: requiredHeight.toFixed(2),
         bottomGap: bottomGap.toFixed(2),
-        isOverflowing: bottomGap < 0,
+        topGap: topGap.toFixed(2),
+        isOverflowing: bottomGap < minPaddingBottom || topGap < 0,
       });
     }
 
-    // 如果文字被遮挡
-    if (bottomGap < 0) {
+    // 如果文字被遮挡（顶部或底部）
+    if (bottomGap < minPaddingBottom || topGap < 0) {
       setIsOverflowing(true);
 
-      // 计算需要增加的 padding
-      const computedStyle = window.getComputedStyle(container);
-      const currentPadding = parseFloat(computedStyle.paddingBottom) || 0;
-      const neededPadding = Math.ceil(currentPadding - bottomGap + 8); // 额外 8px 缓冲
-
-      if (debug) {
-        console.log(`[TextOverflow] 调整 padding-bottom: ${currentPadding}px → ${neededPadding}px`);
-      }
-
-      // 应用新的 padding
-      container.style.paddingBottom = `${neededPadding}px`;
-      setAdjustedPadding(neededPadding);
-    } else {
-      // 文字未被遮挡，恢复原始 padding
-      if (isOverflowing) {
-        setIsOverflowing(false);
-        container.style.paddingBottom = '';
-        setAdjustedPadding(null);
+      if (adjustHeight) {
+        // 自动调整容器高度
+        const neededHeight = Math.ceil(requiredHeight);
 
         if (debug) {
-          console.log(`[TextOverflow] 恢复原始 padding-bottom`);
+          console.log(`[TextOverflow] 调整 min-height: ${currentMinHeight}px → ${neededHeight}px`);
+        }
+
+        container.style.minHeight = `${neededHeight}px`;
+        setAdjustedHeight(neededHeight);
+      } else {
+        // 如果不调整高度，则调整 padding
+        const currentPadding = parseFloat(computedStyle.paddingBottom) || 0;
+        const neededPadding = Math.ceil(currentPadding - bottomGap + 8);
+
+        if (debug) {
+          console.log(`[TextOverflow] 调整 padding-bottom: ${currentPadding}px → ${neededPadding}px`);
+        }
+
+        container.style.paddingBottom = `${neededPadding}px`;
+        setAdjustedPadding(neededPadding);
+      }
+    } else {
+      // 文字未被遮挡
+      if (isOverflowing) {
+        setIsOverflowing(false);
+
+        if (adjustHeight) {
+          // 恢复原始 min-height
+          container.style.minHeight = originalMinHeightRef.current;
+          setAdjustedHeight(null);
+
+          if (debug) {
+            console.log(`[TextOverflow] 恢复原始 min-height: ${originalMinHeightRef.current}`);
+          }
+        } else {
+          container.style.paddingBottom = '';
+          setAdjustedPadding(null);
+
+          if (debug) {
+            console.log(`[TextOverflow] 恢复原始 padding-bottom`);
+          }
         }
       }
     }
