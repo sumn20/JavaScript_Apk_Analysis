@@ -487,7 +487,7 @@ body {
 .upload-zone {
   border: 2px dashed var(--gray-300);
   border-radius: var(--radius-lg);
-  padding: 32px 20px;
+  padding: 32px 20px 40px 20px;
   text-align: center;
   transition: all var(--duration-base) var(--ease-out);
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
@@ -507,7 +507,7 @@ body {
   .upload-area,
   .upload-zone {
     min-height: 140px;
-    padding: 28px 20px;
+    padding: 28px 20px 36px 20px;
   }
 }
 
@@ -515,7 +515,7 @@ body {
   .upload-area,
   .upload-zone {
     min-height: 160px;
-    padding: 32px 24px;
+    padding: 32px 24px 40px 24px;
   }
 }
 
@@ -639,7 +639,7 @@ body {
 .upload-info {
   color: #9ca3af;
   font-size: 12px;
-  margin: 12px 0 0 0;
+  margin: 12px 0 4px 0;
   line-height: 1.4;
 }
 
