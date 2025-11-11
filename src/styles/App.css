@@ -173,7 +173,7 @@ body {
   flex-shrink: 0;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 /* 只有结果页的app-header在result-container中，需要特殊处理 */
