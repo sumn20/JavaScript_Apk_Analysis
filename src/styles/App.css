@@ -228,7 +228,7 @@ body {
   color: white;
   padding: 20px var(--page-padding);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   min-height: 80px;
   height: auto;
@@ -245,10 +245,9 @@ body {
   align-items: center;
   gap: 20px;
   flex: 1;
-  justify-content: flex-start;
 }
 
-.file-uploader-header .header-text {
+.file-uploader-header .header-content > div {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -2598,7 +2597,7 @@ body {
   color: white;
   padding: 20px var(--page-padding);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   min-height: 80px;
   height: auto;
@@ -2615,10 +2614,9 @@ body {
   align-items: center;
   gap: 20px;
   flex: 1;
-  justify-content: flex-start;
 }
 
-.analysis-history-header .header-text {
+.analysis-history-header .header-content > div {
   display: flex;
   align-items: center;
   gap: 20px;

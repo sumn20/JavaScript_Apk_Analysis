@@ -148,7 +148,7 @@ export default function FileUploader({
       {/* 顶部蓝色条 */}
       <header className="file-uploader-header">
         <div className="header-content">
-          <div className="header-text">
+          <div>
             <h1>🔍 APK SDK 分析工具</h1>
             <p className="subtitle">快速识别 Android 应用中的 SDK 和第三方库</p>
           </div>
