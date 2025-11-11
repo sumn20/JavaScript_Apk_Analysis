@@ -169,8 +169,8 @@ body {
   height: auto;
   box-shadow: var(--shadow-md);
   flex-shrink: 0;
-  width: calc(100% + 32px);
-  margin: 0 0 0 -16px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   border-radius: 0 0 12px 12px;
 }
 
