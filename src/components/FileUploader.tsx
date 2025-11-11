@@ -145,11 +145,15 @@ export default function FileUploader({
 
   return (
     <div className="file-uploader">
-      {/* Hero 区域: 应用标题和介绍 */}
-      <div className="hero-section">
-        <h2 className="hero-title">APK SDK 分析工具</h2>
-        <p className="hero-subtitle">快速识别 Android 应用中的 SDK 和第三方库</p>
-      </div>
+      {/* 顶部蓝色条 */}
+      <header className="file-uploader-header">
+        <div className="header-content">
+          <div className="header-text">
+            <h1>🔍 APK SDK 分析工具</h1>
+            <p className="subtitle">快速识别 Android 应用中的 SDK 和第三方库</p>
+          </div>
+        </div>
+      </header>
 
       {/* 上传区域 - 整个区域都可点击 */}
       <div

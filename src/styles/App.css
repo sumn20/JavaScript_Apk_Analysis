@@ -219,6 +219,65 @@ body {
   align-items: center;
 }
 
+/* ===== 首页 FileUploader Header 样式 ===== */
+.file-uploader-header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+  color: white;
+  padding: 20px var(--page-padding);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+  height: auto;
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.file-uploader-header .header-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  justify-content: center;
+}
+
+.file-uploader-header .header-text {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.file-uploader-header h1 {
+  font-size: var(--text-2xl);
+  margin: 0;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.file-uploader-header .subtitle {
+  font-size: var(--text-sm);
+  opacity: 1;
+  display: none;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 平板端显示副标题 */
+@media (min-width: 768px) {
+  .file-uploader-header .subtitle {
+    display: block;
+  }
+}
+
 /* ===== 主内容区域 ===== */
 .app-main {
   flex: 1;
@@ -437,6 +496,14 @@ body {
   flex-direction: column;
   flex: 1;
   gap: var(--spacing-lg);
+}
+
+/* FileUploader 内容区域（除了 header）- 添加 padding 和限制宽度 */
+.file-uploader > :not(.file-uploader-header) {
+  padding: 0 var(--page-padding);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Hero 区域 - 首页标题和介绍 */
