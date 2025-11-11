@@ -22,7 +22,7 @@
 
 ## 项目结构
 
-\`\`\`
+```
 apk-analyzer/
 ├── package.json                   # 项目配置
 ├── tsconfig.json                  # TypeScript 配置
@@ -54,10 +54,11 @@ apk-analyzer/
     │   ├── ResultTabs.tsx         # 结果 Tab 容器
     │   ├── LibraryList.tsx        # SDK 库列表
     │   ├── XmlViewer.tsx          # XML 内容展示
+    │   ├── AnalysisHistory.tsx    # 历史记录页面
     │   └── ReportExport.tsx       # 报告导出对话框
     └── styles/
         └── App.css                # 全局样式
-\`\`\`
+```
 
 ## 开发指南
 
@@ -142,6 +143,10 @@ node scripts/build-rules-bundle.js
 - ✅ SDK 库列表（分类导航 + 展开/折叠）
 - ✅ XML 查看器（复制 + 下载）
 - ✅ 报告导出对话框（自定义选项）
+- ✅ 历史记录页面（日期分组 + 搜索 + 排序）
+- ✅ 最近分析列表（localStorage 持久化 + 快速重新分析）
+- ✅ 删除确认弹窗（防误操作）
+- ✅ 文件验证错误提示（内联显示，替代 alert）
 - ✅ 主应用组件（状态管理 + 错误处理）
 - ✅ 完整 CSS 样式（响应式设计 + 动画）
 
