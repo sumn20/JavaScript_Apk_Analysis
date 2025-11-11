@@ -1,9 +1,10 @@
 // src/App.tsx
 // 主应用组件 - 状态管理和组件编排
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnalysisResult, AnalysisProgress } from './types';
 import { analyzeApk } from './services/apkAnalyzer';
+import { loadConfig, type AppConfig } from './config';
 import FileUploader from './components/FileUploader';
 import AnalysisProgressComponent from './components/AnalysisProgress';
 import ResultTabs from './components/ResultTabs';
@@ -25,12 +26,24 @@ interface RecentAnalysis {
 }
 
 export default function App() {
+  // 配置状态
+  const [config, setConfig] = useState<AppConfig | null>(null);
+
   // 应用状态
   const [state, setState] = useState<AppState>('idle');
   const [progress, setProgress] = useState<AnalysisProgress | null>(null);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
+
+  // 初始化：加载配置
+  useEffect(() => {
+    const initializeApp = async () => {
+      const appConfig = await loadConfig();
+      setConfig(appConfig);
+    };
+    initializeApp();
+  }, []);
 
   // 最近分析列表状态
   const [recentAnalyses, setRecentAnalyses] = useState<RecentAnalysis[]>(() => {
@@ -239,17 +252,48 @@ export default function App() {
 
       {/* 页脚 */}
       <footer className="app-footer">
-        <p>
-          基于{' '}
-          <a
-            href="https://github.com/LibChecker/LibChecker-Rules"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LibChecker-Rules
-          </a>{' '}
-          规则库 | 支持识别 2800+ SDK
-        </p>
+        {config && (
+          <>
+            <div className="footer-content">
+              <div className="footer-project">
+                <p>
+                  基于{' '}
+                  <a
+                    href={config.footer.projectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={config.footer.projectUrl}
+                  >
+                    {config.footer.projectLabel}
+                  </a>{' '}
+                  | 支持识别 2800+ SDK
+                </p>
+              </div>
+
+              {/* ICP 备案信息 */}
+              {config.footer.icp?.enabled && (
+                <div className="footer-icp">
+                  <a
+                    href={config.footer.icp.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={config.footer.icp.label}
+                    className="icp-link"
+                  >
+                    {config.footer.icp.number}
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* 版权信息 */}
+            {config.footer.copyright && (
+              <div className="footer-copyright">
+                {config.footer.copyright}
+              </div>
+            )}
+          </>
+        )}
       </footer>
 
       {/* 导出对话框 */}
