@@ -2175,8 +2175,11 @@ body {
   white-space: nowrap;
 }
 
+/* 库详情容器 - 使用 max-height 动画改进性能 */
 .lib-details {
-  padding: 16px 16px 12px 16px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -2184,6 +2187,22 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-top: 0;
+}
+
+/* 展开状态 */
+.lib-details.expanded {
+  max-height: 1000px;  /* 足够大的值 */
+  padding: 16px 16px 12px 16px;
+  margin-top: 8px;
+}
+
+/* 未展开状态 */
+.lib-details:not(.expanded) {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
 }
 
 .detail-row {

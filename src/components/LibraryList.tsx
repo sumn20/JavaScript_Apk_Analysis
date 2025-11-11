@@ -122,49 +122,47 @@ export default function LibraryList({ libraries, categories }: LibraryListProps)
                   <span className="lib-count">[检出 {lib?.count || 0}x]</span>
                 </div>
 
-                {expandedLibs[lib?.id] && (
-                  <div className="lib-details">
-                    {/* 功能描述（同行显示） */}
-                    {lib?.description && (
-                      <div className="detail-row info-line">
-                        <span className="detail-label">功能</span>
-                        <span className="detail-value">{lib?.description}</span>
-                      </div>
-                    )}
-
-                    {/* 编译架构（同行显示） */}
+                <div className={`lib-details ${expandedLibs[lib?.id] ? 'expanded' : ''}`}>
+                  {/* 功能描述（同行显示） */}
+                  {lib?.description && (
                     <div className="detail-row info-line">
-                      <span className="detail-label">编译架构</span>
-                      <span className="detail-value">
-                        {lib?.architectures ? lib?.architectures.join(', ') : 'N/A'}
-                      </span>
+                      <span className="detail-label">功能</span>
+                      <span className="detail-value">{lib?.description}</span>
                     </div>
+                  )}
 
-                    {/* 官网链接（同行显示） */}
-                    {lib?.sourceLink && (
-                      <div className="detail-row info-line">
-                        <span className="detail-label">官网</span>
-                        <a href={lib?.sourceLink} target="_blank" rel="noopener noreferrer" className="detail-link">
-                          {lib?.sourceLink}
-                        </a>
-                      </div>
-                    )}
-
-                    {/* 检测位置（特殊分组处理） */}
-                    {lib?.locations && lib?.locations?.length > 0 && (
-                      <div className="detail-row location-group">
-                        <span className="detail-label">检测位置</span>
-                        <div className="locations-list">
-                          {lib?.locations?.map((loc, idx) => (
-                            <div key={idx} className="location-item">
-                              {loc}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                  {/* 编译架构（同行显示） */}
+                  <div className="detail-row info-line">
+                    <span className="detail-label">编译架构</span>
+                    <span className="detail-value">
+                      {lib?.architectures ? lib?.architectures.join(', ') : 'N/A'}
+                    </span>
                   </div>
-                )}
+
+                  {/* 官网链接（同行显示） */}
+                  {lib?.sourceLink && (
+                    <div className="detail-row info-line">
+                      <span className="detail-label">官网</span>
+                      <a href={lib?.sourceLink} target="_blank" rel="noopener noreferrer" className="detail-link">
+                        {lib?.sourceLink}
+                      </a>
+                    </div>
+                  )}
+
+                  {/* 检测位置（特殊分组处理） */}
+                  {lib?.locations && lib?.locations?.length > 0 && (
+                    <div className="detail-row location-group">
+                      <span className="detail-label">检测位置</span>
+                      <div className="locations-list">
+                        {lib?.locations?.map((loc, idx) => (
+                          <div key={idx} className="location-item">
+                            {loc}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
