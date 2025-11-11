@@ -2583,7 +2583,7 @@ body {
 .history-item {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--gray-100);
   transition: all 0.2s ease;
   gap: 12px;
@@ -2597,6 +2597,10 @@ body {
   background: var(--gray-50);
 }
 
+.history-item:hover .item-actions {
+  opacity: 1;
+}
+
 .item-icon {
   font-size: 20px;
   flex-shrink: 0;
@@ -2608,10 +2612,10 @@ body {
 }
 
 .item-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--dark);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2621,8 +2625,9 @@ body {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--gray-600);
+  align-items: center;
 }
 
 .meta-package,
@@ -2631,12 +2636,101 @@ body {
   white-space: nowrap;
 }
 
+.meta-package::before {
+  content: '📦';
+  margin-right: 4px;
+}
+
+.meta-size::before {
+  content: '💾';
+  margin-right: 4px;
+}
+
+.meta-time::before {
+  content: '⏰';
+  margin-right: 4px;
+}
+
 /* 历史项操作 */
 .history-item .item-actions {
   display: flex;
   gap: 8px;
   align-items: center;
   flex-shrink: 0;
+  position: relative;
+}
+
+.delete-action {
+  position: relative;
+}
+
+.btn-delete {
+  padding: 6px 10px;
+  background: white;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.history-item .item-actions .confirm-popup {
+  position: absolute;
+  right: -160px;
+  top: 32px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 200px;
+  animation: slideUp 0.2s ease-out;
+}
+
+.history-item .item-actions .confirm-popup p {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: var(--dark);
+}
+
+.history-item .item-actions .confirm-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* 清除历史确认弹窗 */
+.clear-action .confirm-popup {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 200px;
+  animation: slideUp 0.2s ease-out;
+}
+
+.clear-action .confirm-popup p {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: var(--dark);
+}
+
+.clear-action .confirm-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
 /* 响应式设计 */
@@ -2661,7 +2755,24 @@ body {
   }
 
   .stats-cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-icon {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .stat-value {
+    font-size: 20px;
   }
 
   .history-toolbar {
@@ -2675,11 +2786,27 @@ body {
   .history-item {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
 
   .history-item .item-actions {
     width: 100%;
-    margin-top: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .history-item .item-actions .confirm-popup {
+    position: fixed;
+    right: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 300px;
+  }
+
+  .delete-action {
+    width: 100%;
   }
 
   .date-header {

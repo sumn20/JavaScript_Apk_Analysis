@@ -81,8 +81,13 @@ export default function App() {
         result: analysisResult,
       };
 
-      // 将新记录添加到列表顶部，并限制列表大小
-      const updated = [newRecord, ...recentAnalyses].slice(0, 10);
+      // 根据 bundle id 去重：移除相同 packageName 的旧记录
+      const deduplicatedList = recentAnalyses.filter(
+        (record) => record.packageName !== analysisResult.basic.packageName
+      );
+
+      // 将新记录添加到列表顶部，并限制列表大小为 10
+      const updated = [newRecord, ...deduplicatedList].slice(0, 10);
       setRecentAnalyses(updated);
       localStorage.setItem('recentAnalyses', JSON.stringify(updated));
     } catch (err) {
