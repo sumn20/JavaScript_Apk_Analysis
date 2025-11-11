@@ -157,8 +157,10 @@ body {
   overflow: hidden;
 }
 
-/* ===== Header 样式 ===== */
-.app-header {
+/* ===== Header 统一样式 ===== */
+.app-header,
+.file-uploader-header,
+.analysis-history-header {
   background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
   color: white;
   padding: 12px var(--page-padding);
@@ -174,7 +176,27 @@ body {
   border-radius: 0;
 }
 
-.header-content {
+/* 只有结果页的app-header在result-container中，需要特殊处理 */
+.result-container .app-header {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+/* 首页和分析历史页的header在其他容器中 */
+.upload-analyze-container .file-uploader-header {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.analysis-history .analysis-history-header {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+/* Header 内容通用样式 */
+.app-header .header-content,
+.file-uploader-header .header-content,
+.analysis-history-header .header-content {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -182,14 +204,18 @@ body {
   padding-left: 8px;
 }
 
-.header-content > div {
+.app-header .header-content > div,
+.file-uploader-header .header-content > div,
+.analysis-history-header .header-content > div {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 12px;
 }
 
-.header-content h1 {
+.app-header h1,
+.file-uploader-header h1,
+.analysis-history-header h1 {
   font-size: var(--text-2xl);
   margin: 0;
   font-weight: 700;
@@ -197,7 +223,9 @@ body {
   flex-shrink: 0;
 }
 
-.header-content .subtitle {
+.app-header .subtitle,
+.file-uploader-header .subtitle,
+.analysis-history-header .subtitle {
   font-size: var(--text-sm);
   opacity: 1;
   display: block;
@@ -211,13 +239,7 @@ body {
   flex-shrink: 0;
 }
 
-/* 平板端显示副标题 */
-@media (min-width: 768px) {
-  .header-content .subtitle {
-    display: block;
-  }
-}
-
+/* Header 右侧按钮 */
 .header-actions {
   display: flex;
   gap: 8px;
@@ -225,68 +247,6 @@ body {
   margin-left: 24px;
   flex-shrink: 0;
   padding-right: 0;
-}
-
-/* ===== 首页 FileUploader Header 样式 ===== */
-.file-uploader-header {
-  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
-  color: white;
-  padding: 16px var(--page-padding);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 70px;
-  height: auto;
-  box-shadow: var(--shadow-md);
-  flex-shrink: 0;
-  width: calc(100% + 32px);
-  margin: 0 0 0 -16px;
-  border-radius: 0;
-}
-
-.file-uploader-header .header-content {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  padding-left: 8px;
-}
-
-.file-uploader-header .header-content > div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-}
-
-.file-uploader-header h1 {
-  font-size: var(--text-2xl);
-  margin: 0;
-  font-weight: 700;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.file-uploader-header .subtitle {
-  font-size: var(--text-sm);
-  opacity: 1;
-  display: none;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* 平板端显示副标题 */
-@media (min-width: 768px) {
-  .file-uploader-header .subtitle {
-    display: block;
-  }
 }
 
 /* ===== 主内容区域 ===== */
@@ -2595,68 +2555,6 @@ body {
   .analysis-history {
     gap: 28px;
     padding: 20px;
-  }
-}
-
-/* 分析历史页顶部蓝色条 */
-.analysis-history-header {
-  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
-  color: white;
-  padding: 16px var(--page-padding);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 70px;
-  height: auto;
-  box-shadow: var(--shadow-md);
-  flex-shrink: 0;
-  width: calc(100% + 32px);
-  margin: 0 0 0 -16px;
-  border-radius: 0;
-}
-
-.analysis-history-header .header-content {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  padding-left: 8px;
-}
-
-.analysis-history-header .header-content > div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-}
-
-.analysis-history-header h1 {
-  font-size: var(--text-2xl);
-  margin: 0;
-  font-weight: 700;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.analysis-history-header .subtitle {
-  font-size: var(--text-sm);
-  opacity: 1;
-  display: none;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* 平板端显示副标题 */
-@media (min-width: 768px) {
-  .analysis-history-header .subtitle {
-    display: block;
   }
 }
 
