@@ -31,9 +31,8 @@ export function useTextOverflowDetection({
   debug = false,
 }: TextOverflowConfig) {
   const [isOverflowing, setIsOverflowing] = useState(false);
-  const [adjustedHeight, setAdjustedHeight] = useState<number | null>(null);
   const [adjustedPadding, setAdjustedPadding] = useState<number | null>(null);
-  const checkTimeoutRef = useRef<NodeJS.Timeout>();
+  const checkTimeoutRef = useRef<ReturnType<typeof setInterval>>();
   const observerRef = useRef<ResizeObserver>();
   const originalMinHeightRef = useRef<string>('');
 
@@ -85,12 +84,12 @@ export function useTextOverflowDetection({
         requiredHeight: requiredHeight.toFixed(2),
         bottomGap: bottomGap.toFixed(2),
         topGap: topGap.toFixed(2),
-        isOverflowing: bottomGap < minPaddingBottom || topGap < 0,
+        isOverflowing: bottomGap < minPaddingBottom || topGap < minPaddingTop,
       });
     }
 
     // 如果文字被遮挡（顶部或底部）
-    if (bottomGap < minPaddingBottom || topGap < 0) {
+    if (bottomGap < minPaddingBottom || topGap < minPaddingTop) {
       setIsOverflowing(true);
 
       if (adjustHeight) {
@@ -102,7 +101,6 @@ export function useTextOverflowDetection({
         }
 
         container.style.minHeight = `${neededHeight}px`;
-        setAdjustedHeight(neededHeight);
       } else {
         // 如果不调整高度，则调整 padding
         const currentPadding = parseFloat(computedStyle.paddingBottom) || 0;
@@ -123,7 +121,6 @@ export function useTextOverflowDetection({
         if (adjustHeight) {
           // 恢复原始 min-height
           container.style.minHeight = originalMinHeightRef.current;
-          setAdjustedHeight(null);
 
           if (debug) {
             console.log(`[TextOverflow] 恢复原始 min-height: ${originalMinHeightRef.current}`);

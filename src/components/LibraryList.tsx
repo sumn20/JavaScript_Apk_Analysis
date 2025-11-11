@@ -9,6 +9,7 @@ interface LibraryListProps {
   categories: Record<string, { label: string; icon: string }>;
 }
 
+// @ts-ignore
 export default function LibraryList({ libraries, categories }: LibraryListProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [expandedLibs, setExpandedLibs] = useState<Record<string, boolean>>({});

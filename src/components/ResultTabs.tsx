@@ -12,6 +12,7 @@ interface ResultTabsProps {
   onReset: () => void;
 }
 
+// @ts-ignore
 export default function ResultTabs({ result, onExport, onReset }: ResultTabsProps) {
   const [activeTab, setActiveTab] = useState<'libraries' | 'manifest'>('libraries');
 

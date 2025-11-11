@@ -59,7 +59,7 @@ export default function FileUploader({
   // 当删除弹窗打开时，禁用滚动
   useEffect(() => {
     if (deletingRecordId) {
-      const scrollContainer = document.querySelector('.upload-analyze-container');
+      const scrollContainer = document.querySelector('.upload-analyze-container') as HTMLElement | null;
       if (scrollContainer) {
         const originalOverflow = scrollContainer.style.overflow;
         scrollContainer.style.overflow = 'hidden';

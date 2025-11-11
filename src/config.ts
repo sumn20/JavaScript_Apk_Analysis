@@ -112,21 +112,21 @@ function isEmpty(value: any): boolean {
  */
 function mergeConfig(defaults: AppConfig, overrides: Partial<AppConfig>): AppConfig {
   // 过滤掉空值的 footer 配置
-  const footerOverrides = overrides.footer || {};
+  const footerOverrides = overrides.footer || {} as Record<string, any>;
   const cleanedFooter: any = {};
 
   // 只保留非空的值
-  if (!isEmpty(footerOverrides.projectUrl)) cleanedFooter.projectUrl = footerOverrides.projectUrl;
-  if (!isEmpty(footerOverrides.projectLabel)) cleanedFooter.projectLabel = footerOverrides.projectLabel;
-  if (!isEmpty(footerOverrides.copyright)) cleanedFooter.copyright = footerOverrides.copyright;
+  if (!isEmpty((footerOverrides as any).projectUrl)) cleanedFooter.projectUrl = (footerOverrides as any).projectUrl;
+  if (!isEmpty((footerOverrides as any).projectLabel)) cleanedFooter.projectLabel = (footerOverrides as any).projectLabel;
+  if (!isEmpty((footerOverrides as any).copyright)) cleanedFooter.copyright = (footerOverrides as any).copyright;
 
   // 处理 ICP 配置
-  if (footerOverrides.icp) {
+  if ((footerOverrides as any).icp) {
     const icpConfig: any = {};
-    if (footerOverrides.icp.enabled !== undefined) icpConfig.enabled = footerOverrides.icp.enabled;
-    if (!isEmpty(footerOverrides.icp.number)) icpConfig.number = footerOverrides.icp.number;
-    if (!isEmpty(footerOverrides.icp.url)) icpConfig.url = footerOverrides.icp.url;
-    if (!isEmpty(footerOverrides.icp.label)) icpConfig.label = footerOverrides.icp.label;
+    if ((footerOverrides as any).icp.enabled !== undefined) icpConfig.enabled = (footerOverrides as any).icp.enabled;
+    if (!isEmpty((footerOverrides as any).icp.number)) icpConfig.number = (footerOverrides as any).icp.number;
+    if (!isEmpty((footerOverrides as any).icp.url)) icpConfig.url = (footerOverrides as any).icp.url;
+    if (!isEmpty((footerOverrides as any).icp.label)) icpConfig.label = (footerOverrides as any).icp.label;
 
     // 只有当有实际值时才合并 ICP 配置
     if (Object.keys(icpConfig).length > 0) {

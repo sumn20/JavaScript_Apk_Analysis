@@ -367,11 +367,3 @@ function getCategoryIcon(category: string, result: AnalysisResult): string {
   return lib?.categoryIcon || '📦';
 }
 
-/**
- * 转义 HTML
- */
-function escapeHtml(text: string): string {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}

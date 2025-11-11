@@ -1,0 +1,460 @@
+/* ========================================
+   APK 分析工具 - UI 修复代码汇总
+   
+   本文件包含所有建议的 CSS 修复
+   可以逐步集成到 src/styles/App.css 中
+   
+   修复优先级：高 > 中 > 低
+======================================== */
+
+/* ========== 高优先级修复 ========== */
+
+/* 修复 1: 上传区域间距对称化 (高优) */
+/* 位置: .upload-zone 样式块 (L485-520) */
+.upload-zone {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-lg);
+  padding: 32px 20px;  /* 改: 从 32px 20px 40px 20px 改为对称 */
+  text-align: center;
+  transition: all var(--duration-base) var(--ease-out);
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  min-height: 140px;
+}
+
+@media (min-width: 768px) {
+  .upload-zone {
+    min-height: 160px;  /* 改: 从 140px 改为 160px，与桌面统一 */
+    padding: 32px 20px;  /* 改: 从 28px 20px 36px 20px 改为对称 */
+  }
+}
+
+@media (min-width: 1200px) {
+  .upload-zone {
+    min-height: 160px;
+    padding: 40px 24px;  /* 改: 从 32px 24px 40px 24px 改为对称，增加顶部空间 */
+  }
+}
+
+/* 修复 2: 删除按钮可点击区域标准化 (高优) */
+/* 位置: .btn-icon 和 .btn-delete 样式块 (L2248-2246) */
+.btn-icon {
+  padding: 6px 8px;  /* 改: 从 4px 6px 改为 6px 8px */
+  font-size: 14px;
+  min-width: 40px;  /* 改: 从 32px 改为 40px */
+  min-height: 40px;  /* 新增: 添加最小高度 */
+  justify-content: center;
+}
+
+.btn-delete {
+  padding: 6px 8px;  /* 改: 从 4px 6px 改为 6px 8px */
+  font-size: 14px;
+  min-width: 40px;  /* 新增 */
+  min-height: 40px;  /* 新增 */
+  cursor: pointer;
+  background: white;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* 移动设备增加点击区域 (无障碍标准) */
+@media (max-width: 768px) {
+  .btn-icon,
+  .btn-delete {
+    min-width: 44px;  /* 新增: 无障碍标准 44x44px */
+    min-height: 44px;
+  }
+}
+
+/* 修复 3: 最近分析列表卡片间距优化 (高优) */
+/* 位置: .recent-analyses 和 .analyses-list 样式块 (L2082-2140) */
+.recent-analyses {
+  margin-top: 0;  /* 改: 从 24px 改为 0，由容器 gap 管理 */
+  background: white;
+  border-radius: 12px;
+  padding: var(--spacing-2xl);  /* 改: 使用 CSS 变量 (24px) */
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.analyses-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;  /* 改: 从 12px 改为 16px，改善视觉间距 */
+}
+
+@media (max-width: 768px) {
+  .recent-analyses {
+    padding: var(--spacing-xl);  /* 改: 手机端 20px */
+  }
+  
+  .analyses-list {
+    gap: 12px;  /* 改: 手机端保持较小间距 */
+  }
+}
+
+@media (min-width: 768px) {
+  .recent-analyses {
+    margin-bottom: 0;  /* 改: 移除 margin-bottom，由容器 gap 管理 */
+  }
+}
+
+/* ========== 中优先级修复 ========== */
+
+/* 修复 4: Hero Section 字体响应式优化 (中优) */
+/* 位置: .hero-title 和 .hero-subtitle 样式块 (L443-483) */
+.hero-title {
+  font-size: 26px;  /* 改: 从 28px 改为 26px，更适应超小屏幕 */
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;  /* 新增: 明确行高 */
+}
+
+@media (min-width: 480px) {
+  .hero-title {
+    font-size: 28px;  /* 新增: 小屏幕断点 */
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 34px;  /* 新增: 大平板断点 */
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-title {
+    font-size: 36px;
+  }
+}
+
+.hero-subtitle {
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.8;  /* 改: 从 1.6 改为 1.8，改善可读性 */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 480px) {
+  .hero-subtitle {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-subtitle {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-subtitle {
+    font-size: 16px;
+  }
+}
+
+/* 修复 5: 隐私提示框对齐和可访问性 (中优) */
+/* 位置: .privacy-alert 样式块 (L670-734) */
+.privacy-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;  /* 改: 从 8px 改为 12px，增加间距 */
+  padding: var(--spacing-md) var(--spacing-lg);  /* 改: 使用 CSS 变量 */
+  background: #fef3c7;
+  border-radius: var(--radius-sm);  /* 新增: 添加圆角 */
+  border-left: 4px solid #f59e0b;
+  animation: slideIn 0.4s ease-out;
+}
+
+.alert-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 3px;  /* 改: 从 2px 改为 3px，精确对齐 */
+  line-height: 1;  /* 新增: 确保图标垂直对齐 */
+}
+
+.alert-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #92400e;  /* 改: 从 #92400e 改为更深的 #92400e (WCAG AAA) */
+  margin: 0 0 4px 0;
+}
+
+.alert-text {
+  font-size: 12px;
+  color: #92400e;  /* 改: 增加对比度 WCAG AAA */
+  margin: 0;
+  line-height: 1.6;  /* 改: 从 1.5 改为 1.6，增加行高 */
+}
+
+@media (min-width: 768px) {
+  .privacy-alert {
+    padding: var(--spacing-md) var(--spacing-lg);
+    gap: 14px;
+  }
+
+  .alert-icon {
+    font-size: 22px;
+  }
+
+  .alert-title {
+    font-size: 14px;
+  }
+
+  .alert-text {
+    font-size: 13px;
+  }
+}
+
+/* ========== 低优先级修复 ========== */
+
+/* 修复 6: 超小屏幕适配 (< 360px) (低优) */
+/* 新增: 超小屏幕专用处理 */
+@media (max-width: 359px) {
+  :root {
+    --page-padding: 12px;
+    --section-gap: 12px;
+  }
+  
+  .hero-title {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  
+  .hero-subtitle {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  
+  .upload-zone {
+    padding: 24px 12px;
+    min-height: 120px;
+  }
+  
+  .upload-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  
+  .upload-title {
+    font-size: 14px;
+  }
+  
+  .upload-subtitle,
+  .upload-info {
+    font-size: 12px;
+  }
+  
+  .privacy-alert {
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  
+  .footer-info {
+    padding: 16px 12px;
+    margin-bottom: 12px;
+  }
+  
+  .footer-info h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .info-list {
+    gap: 8px;
+  }
+  
+  .info-list li {
+    font-size: 12px;
+    padding-left: 20px;
+  }
+}
+
+/* 修复 7: 最近分析列表手机端优化 (低优) */
+/* 位置: .analysis-item 样式块 (L2142-2156) */
+.analysis-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 12px;
+  background: var(--gray-50);
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+  transition: all 0.2s ease;
+}
+
+.analysis-item:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+}
+
+@media (max-width: 480px) {
+  .analysis-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .item-info {
+    grid-column: 1;
+  }
+  
+  .item-actions {
+    grid-column: 1;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ========== 额外改进 ========== */
+
+/* 添加焦点样式提升可访问性 */
+.link-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--dark);
+  outline-offset: 2px;
+}
+
+/* 改进响应式断点：添加平板端细化 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --page-padding: 18px;
+    --section-gap: 18px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  :root {
+    --page-padding: 20px;
+    --section-gap: 20px;
+  }
+}
+
+/* 改进最近分析标题的响应式字体 */
+.recent-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+@media (min-width: 768px) {
+  .recent-title {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .recent-title {
+    font-size: 18px;
+  }
+}
+
+/* 改进列表项文本溢出处理 */
+.item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;  /* 新增: 长英文字符串允许换行 */
+}
+
+.item-package {
+  max-width: 150px;  /* 新增: 限制包名宽度 */
+  white-space: nowrap;
+}
+
+/* 改进底部说明区域的标题响应式 */
+.footer-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 12px 0;
+}
+
+@media (min-width: 768px) {
+  .footer-info h4 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+}
+
+/* 改进列表项的行高和间距配合 */
+.info-list li {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.7;  /* 改: 从 1.6 改为 1.7，更好地匹配 gap */
+  padding-left: 24px;
+  position: relative;
+}
+
+.info-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;  /* 改: 从 0 改为 4px，更好的对齐 */
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+/* ========== 测试备忘 ========== */
+/*
+测试清单：
+1. 手机 (320px) - Safari/Chrome
+2. 手机 (375px) - iPhone 标准
+3. 平板 (768px) - iPad
+4. 桌面 (1200px+) - 多浏览器
+5. 触摸设备 - 按钮点击反应
+6. 键盘导航 - Tab 焦点样式
+7. 屏幕放大 200% - 文本可读性
+8. 屏幕阅读器 - VoiceOver/NVDA
+
+优先级验证：
+[ ] 高优先级修复已集成
+[ ] 中优先级修复已集成
+[ ] 低优先级修复已集成
+[ ] 所有修复都通过测试
+*/

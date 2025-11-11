@@ -95,10 +95,11 @@ export default function App() {
       setProgress(null);
 
       // 添加到最近分析列表
+      const fileSizeFormatted = (file.size / 1024 / 1024).toFixed(2) + ' MB';
       const newRecord: RecentAnalysis = {
         id: Date.now(),
         fileName: file.name,
-        fileSize: analysisResult.file?.sizeFormatted || '未知',
+        fileSize: fileSizeFormatted,
         packageName: analysisResult.basic.packageName,
         analyzeTime: new Date().toLocaleString('zh-CN'),
         result: analysisResult,
@@ -127,7 +128,7 @@ export default function App() {
   };
 
   // 快速重新分析
-  const handleQuickReanalyze = (record: RecentAnalysis) => {
+  const handleQuickReanalyze = (_record: RecentAnalysis) => {
     setFileSizeError(null);
     // 重新分析该APK需要重新上传，这里先返回到上传界面
     // 在实际应用中可以缓存APK文件进行重新分析
