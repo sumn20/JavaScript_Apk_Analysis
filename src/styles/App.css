@@ -1820,7 +1820,7 @@ body {
   font-weight: 600;
   color: var(--dark);
   font-family: monospace;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -1833,7 +1833,7 @@ body {
 /* 平板端+ */
 @media (min-width: 768px) {
   .lib-name {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1;
     flex: 0 1 auto;
   }
@@ -1847,7 +1847,7 @@ body {
   display: inline-block;
   margin-right: 6px;
   color: #f59e0b;
-  font-size: 13px;
+  font-size: 12px;
   cursor: help;
   vertical-align: middle;
   transition: all 0.3s ease;
@@ -1868,7 +1868,7 @@ body {
 .lib-label {
   color: var(--primary);
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   flex: 0 0 auto;
   white-space: nowrap;
   flex-shrink: 0;
@@ -1879,7 +1879,7 @@ body {
   color: var(--primary);
   padding: 2px 6px;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   margin-left: auto;
   flex-shrink: 0;
