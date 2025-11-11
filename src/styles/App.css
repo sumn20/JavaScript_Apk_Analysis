@@ -833,7 +833,7 @@ body {
 /* ===== 隐私保护提示框 ===== */
 .privacy-alert {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   padding: 28px 16px;
   background: #fef3c7;
@@ -857,7 +857,6 @@ body {
 .alert-icon {
   font-size: 20px;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
 .alert-content {
