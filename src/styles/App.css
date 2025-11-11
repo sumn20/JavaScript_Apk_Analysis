@@ -317,6 +317,13 @@ body {
   overflow-x: hidden;
   padding: var(--page-padding);
   gap: var(--section-gap);
+  /* 让子元素（如进度框）可以居中 */
+  justify-content: flex-start;
+}
+
+/* 当显示进度框时，进度框居中 */
+.upload-analyze-container > .analysis-progress {
+  align-self: center;
 }
 
 .result-container {
@@ -1211,6 +1218,14 @@ body {
   .analysis-progress {
     max-width: 700px;
     padding: 24px;
+  }
+}
+
+/* PC/MacBook 优化 (1024px+) - 更好的宽度和居中 */
+@media (min-width: 1024px) {
+  .analysis-progress {
+    max-width: 550px;
+    padding: 28px;
   }
 }
 
