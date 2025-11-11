@@ -171,7 +171,7 @@ body {
   flex-shrink: 0;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  border-radius: 0 0 12px 12px;
+  border-radius: 0;
 }
 
 .header-content {
@@ -241,7 +241,7 @@ body {
   flex-shrink: 0;
   width: calc(100% + 32px);
   margin: 0 0 0 -16px;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0;
 }
 
 .file-uploader-header .header-content {
@@ -2612,7 +2612,7 @@ body {
   flex-shrink: 0;
   width: calc(100% + 32px);
   margin: 0 0 0 -16px;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0;
 }
 
 .analysis-history-header .header-content {
