@@ -6,6 +6,7 @@ import { AnalysisResult, AnalysisProgress } from './types';
 import { analyzeApk } from './services/apkAnalyzer';
 import { loadConfig, type AppConfig } from './config';
 import { useTextOverflowDetection } from './hooks/useTextOverflowDetection';
+import { loadRules } from './services/rulesLoader';
 import FileUploader from './components/FileUploader';
 import AnalysisProgressComponent from './components/AnalysisProgress';
 import ResultTabs from './components/ResultTabs';
@@ -46,11 +47,24 @@ export default function App() {
     debug: false,
   });
 
-  // 初始化：加载配置
+  // 初始化：加载配置和规则
   useEffect(() => {
     const initializeApp = async () => {
+      // 1. 加载配置
       const appConfig = await loadConfig();
       setConfig(appConfig);
+
+      // 2. 预加载规则库（背景加载，不阻塞 UI）
+      try {
+        console.log('⏳ 预加载规则库...');
+        const rules = await loadRules();
+        if (rules) {
+          console.log(`✓ 规则库预加载完成 (${rules.totalRules} 个规则)`);
+        }
+      } catch (err) {
+        console.warn('规则库预加载失败:', err);
+        // 不影响应用正常运行
+      }
     };
     initializeApp();
   }, []);
