@@ -1914,15 +1914,14 @@ body {
   overflow-y: hidden;
   flex-wrap: nowrap;
   align-items: center;
-  /* sticky 效果，滚动时冻结 */
-  position: sticky;
-  top: 0;
   background: white;
-  z-index: var(--z-sticky);
+  z-index: var(--z-dropdown);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   -webkit-overflow-scrolling: touch;  /* 平滑滚动 */
   transform: translateZ(0);  /* GPU 加速 */
   flex-shrink: 0;
+  /* 注意：不使用 position: sticky，因为它在可滚动容器内不生效
+     如果需要粘性效果，应该将此元素移出可滚动容器 */
 }
 
 /* SDK分类按钮 */
