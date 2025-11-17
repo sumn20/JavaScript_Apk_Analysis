@@ -16,7 +16,7 @@
 - **前端框架**: React 18 + TypeScript
 - **构建工具**: Vite
 - **APK 解析**: jszip
-- **AXML 解析**: 自实现（基于 axml2xml）
+- **AXML 解析**: 自实现（基于 [axml2xml](https://github.com/micblo/axml2xml)）
 - **多线程**: Web Worker
 - **缓存**: IndexedDB
 
