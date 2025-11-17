@@ -141,16 +141,12 @@ export default function App() {
     setFileSizeError(errorMessage);
   };
 
-  // 快速重新分析
+  // 查看历史分析结果
   const handleQuickReanalyze = (record: RecentAnalysis) => {
     setFileSizeError(null);
-    // 由于未缓存原始APK文件，需要用户重新上传
-    // 跳转到上传页面并显示提示信息
-    setState('idle');
-    // 显示提示信息
-    setTimeout(() => {
-      alert(`请重新上传 ${record.fileName} 进行分析\n\n注意：出于隐私和存储考虑，本工具不会缓存原始 APK 文件。`);
-    }, 100);
+    // 直接加载缓存的分析结果并跳转到结果页面
+    setResult(record.result);
+    setState('completed');
   };
 
   // 查看历史记录

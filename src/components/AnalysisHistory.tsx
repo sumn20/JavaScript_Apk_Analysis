@@ -248,9 +248,9 @@ export default function AnalysisHistory({
                       <button
                         className="btn btn-sm btn-outline"
                         onClick={() => onQuickReanalyze(record)}
-                        title="重新分析此 APK"
+                        title="查看此 APK 的分析结果"
                       >
-                        重新分析
+                        查看结果
                       </button>
                       <div className="delete-action">
                         <button
