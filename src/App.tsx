@@ -142,11 +142,15 @@ export default function App() {
   };
 
   // 快速重新分析
-  const handleQuickReanalyze = (_record: RecentAnalysis) => {
+  const handleQuickReanalyze = (record: RecentAnalysis) => {
     setFileSizeError(null);
-    // 重新分析该APK需要重新上传，这里先返回到上传界面
-    // 在实际应用中可以缓存APK文件进行重新分析
+    // 由于未缓存原始APK文件，需要用户重新上传
+    // 跳转到上传页面并显示提示信息
     setState('idle');
+    // 显示提示信息
+    setTimeout(() => {
+      alert(`请重新上传 ${record.fileName} 进行分析\n\n注意：出于隐私和存储考虑，本工具不会缓存原始 APK 文件。`);
+    }, 100);
   };
 
   // 查看历史记录
