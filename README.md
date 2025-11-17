@@ -11,6 +11,10 @@
 - ✅ 完整展示 AndroidManifest.xml 内容（支持复制和下载）
 - ✅ 生成专业分析报告（HTML / JSON）
 
+### 界面预览
+
+![APK 分析工具界面](public/demo_1.png)
+
 ## 技术栈
 
 - **前端框架**: React 18 + TypeScript
