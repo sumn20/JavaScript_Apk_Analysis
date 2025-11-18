@@ -55,6 +55,7 @@ const DEFAULT_CONFIG: AppConfig = {
     projectLabel: '规则库',
     copyright: '© 2025 APK Analyzer. All rights reserved.',
   },
+  rules: {},
 };
 
 let cachedConfig: AppConfig | null = null;

@@ -8,6 +8,17 @@ const DB_VERSION = 1;
 const STORE_NAME = 'rules_bundle';
 const LOCAL_VERSION_KEY = 'rules_local_version';
 
+function getLocalStorage(): Storage | null {
+  try {
+    if (typeof localStorage === 'undefined') {
+      return null;
+    }
+    return localStorage;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * 加载规则库
  * 优先从 IndexedDB 加载，如果不存在则从 public/ 目录加载
@@ -35,7 +46,7 @@ export async function loadRules(): Promise<RulesBundle | null> {
 
     // 3. 存储到 IndexedDB
     await saveRulesToIndexedDB(rules);
-    localStorage.setItem(LOCAL_VERSION_KEY, rules.version);
+    getLocalStorage()?.setItem(LOCAL_VERSION_KEY, rules.version);
 
     return rules;
   } catch (error) {
@@ -138,7 +149,7 @@ export async function checkAndUpdateRules(
 ): Promise<boolean> {
   try {
     // 1. 获取本地版本
-    const localVersion = localStorage.getItem(LOCAL_VERSION_KEY);
+    const localVersion = getLocalStorage()?.getItem(LOCAL_VERSION_KEY);
 
     // 2. 获取云端版本信息
     const response = await fetch(versionUrl);
@@ -168,7 +179,7 @@ export async function checkAndUpdateRules(
     await saveRulesToIndexedDB(rulesBundle);
 
     // 6. 更新本地版本号
-    localStorage.setItem(LOCAL_VERSION_KEY, cloudVersion);
+    getLocalStorage()?.setItem(LOCAL_VERSION_KEY, cloudVersion);
 
     console.log('✅ 规则库更新成功！');
     return true;
@@ -195,7 +206,7 @@ export async function clearRulesCache(): Promise<void> {
       store.clear();
 
       transaction.oncomplete = () => {
-        localStorage.removeItem(LOCAL_VERSION_KEY);
+        getLocalStorage()?.removeItem(LOCAL_VERSION_KEY);
         console.log('✓ 规则库缓存已清除');
         resolve();
       };

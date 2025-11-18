@@ -485,7 +485,7 @@ body {
 /* ===== 按钮样式 ===== */
 .button,
 .btn {
-  padding: 10px 20px;
+  padding: 6px 16px;
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
@@ -546,7 +546,7 @@ body {
 }
 
 .btn-sm {
-  padding: 8px 16px;
+  padding: 4px 12px;
   font-size: 13px;
 }
 
@@ -1798,41 +1798,86 @@ body {
 .result-stats-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  padding: 10px 20px;
-  background: white;
-  border-bottom: 1px solid var(--border);
+  gap: 6px;
+  padding: 10px 16px;
+  position: relative;
+  background: linear-gradient(125deg, rgba(99, 102, 241, 0.12), rgba(236, 72, 153, 0.1));
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.result-stats-cards::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.45), transparent 45%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* 统计卡片 - 紧凑样式 */
 .stat-card-compact {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   color: white;
-  padding: 4px 8px;
-  border-radius: 3px;
+  padding: 5px 11px;
+  border-radius: var(--radius-sm);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+  backdrop-filter: blur(6px);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25); /* 提升文字对比度 */
+}
+
+.stat-card-compact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  mix-blend-mode: screen;
+  opacity: 0.65;
+}
+
+.stat-card-compact > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* 主统计卡片 - 紫色渐变 */
 .stat-card-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%); /* 加深背景提升对比 */
 }
 
 /* 分类统计卡片 - 粉色渐变 */
 .stat-card-category {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); /* 加深背景提升对比 */
 }
 
 .stat-card-compact .stat-label {
-  opacity: 0.9;
+  opacity: 0.95;
+  font-size: 11px;
+  text-transform: none;
+  color: #fdfcff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.1;
 }
 
 .stat-card-compact .stat-value {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 700;
+  color: #ffdba0;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
 .result-header {
@@ -2626,20 +2671,20 @@ body {
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  padding: 6px 12px;
+  padding: 4px 10px;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 32px;
+  min-height: 28px;
 }
 
 /* 小按钮 */
 .btn-sm {
-  padding: 6px 12px;
+  padding: 3px 10px;
   font-size: 12px;
-  min-height: 32px;
+  min-height: 26px;
 }
 
 /* 描边按钮 */
@@ -2655,7 +2700,7 @@ body {
 
 /* 删除按钮 */
 .btn-delete {
-  padding: 6px 12px;
+  padding: 4px 10px;
   font-size: 14px;
   min-width: 32px;
   min-height: 32px;
@@ -2673,7 +2718,7 @@ body {
 
 /* 图标按钮 */
 .btn-icon {
-  padding: 6px 12px;
+  padding: 4px 10px;
   font-size: 14px;
   min-width: 32px;
   min-height: 32px;
@@ -3562,4 +3607,3 @@ body {
   margin-top: 4px;
   margin-bottom: 0;
 }
-
