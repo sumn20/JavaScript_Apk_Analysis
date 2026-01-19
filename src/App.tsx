@@ -205,8 +205,8 @@ export default function App() {
               <>
                 <h1>🔍 APK SDK 分析工具</h1>
                 <p className="subtitle">快速识别 Android 应用中的 SDK 和第三方库</p>
-                {/* 应用宝下载按钮 */}
-                {state === 'completed' && result && (
+                {/* 应用宝下载按钮 - 首页显示，分析时隐藏 */}
+                {(state === 'idle' || state === 'completed') && (
                   <div className="subtitle-actions">
                     <button 
                       className="btn btn-sm btn-primary" 
@@ -357,7 +357,7 @@ export default function App() {
       )}
 
       {/* 应用宝下载对话框 */}
-      {showAppStoreDialog && result && (
+      {showAppStoreDialog && (
         <AppStoreDownload result={result} onClose={() => setShowAppStoreDialog(false)} />
       )}
     </div>

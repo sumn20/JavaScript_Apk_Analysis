@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { AnalysisResult } from '../types';
 
 interface AppStoreDownloadProps {
-  result: AnalysisResult;
+  result: AnalysisResult | null;
   onClose: () => void;
 }
 
@@ -194,20 +194,30 @@ export default function AppStoreDownload({ result, onClose }: AppStoreDownloadPr
           {/* 当前应用信息 */}
           <div className="form-group">
             <label>当前分析的应用</label>
-            <div className="app-info-card">
-              <div className="app-info-item">
-                <span className="label">应用名称:</span>
-                <span className="value">未知</span>
+            {result ? (
+              <div className="app-info-card">
+                <div className="app-info-item">
+                  <span className="label">应用名称:</span>
+                  <span className="value">未知</span>
+                </div>
+                <div className="app-info-item">
+                  <span className="label">包名:</span>
+                  <span className="value">{result.basic.packageName}</span>
+                </div>
+                <div className="app-info-item">
+                  <span className="label">版本:</span>
+                  <span className="value">{result.basic.versionName} ({result.basic.versionCode})</span>
+                </div>
               </div>
-              <div className="app-info-item">
-                <span className="label">包名:</span>
-                <span className="value">{result.basic.packageName}</span>
+            ) : (
+              <div className="app-info-card">
+                <div className="app-info-item">
+                  <span className="value" style={{ color: '#6c757d', fontStyle: 'italic' }}>
+                    暂无分析结果，请先上传 APK 文件进行分析
+                  </span>
+                </div>
               </div>
-              <div className="app-info-item">
-                <span className="label">版本:</span>
-                <span className="value">{result.basic.versionName} ({result.basic.versionCode})</span>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* 应用宝链接输入 */}
