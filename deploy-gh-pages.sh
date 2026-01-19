@@ -18,10 +18,10 @@ git commit -m "Deploy to GitHub Pages"
 
 # 4. 推送到 gh-pages 分支
 echo "📤 推送到 gh-pages 分支..."
-git push -f git@github.com:sumn20/JavaScript_Apk_Analysis.git main:gh-pages
+git push -f git@github.com:sumn20/analysis.git main:gh-pages
 
 # 5. 返回项目根目录
 cd ..
 
 echo "✅ 部署完成！"
-echo "🌐 访问地址: https://sumn20.github.io/JavaScript_Apk_Analysis/"
+echo "🌐 访问地址: https://sumn20.github.io/analysis/"
