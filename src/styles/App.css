@@ -277,7 +277,6 @@ body {
 .analysis-history-header .header-content {
   display: flex;
   align-items: center;
-  justify-content: center; /* 横向居中 */
   gap: 20px;
   flex: 1;
   padding-left: 8px;
@@ -288,11 +287,11 @@ body {
 .file-uploader-header .header-content > div,
 .analysis-history-header .header-content > div {
   display: flex;
-  flex-direction: column; /* 保持垂直排列 */
-  align-items: center; /* 水平居中 */
-  justify-content: center;
-  gap: 4px; /* 标题、副标题和按钮之间的间距 */
-  text-align: center; /* 文字居中 */
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: left;
 }
 
 /* 修复: 标题行高和边距,确保视觉居中 */
