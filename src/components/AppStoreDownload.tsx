@@ -34,20 +34,69 @@ export default function AppStoreDownload({ result, onClose }: AppStoreDownloadPr
     return pattern.test(url);
   };
 
-  // 从应用宝页面提取应用信息（基于你的 Python 代码逻辑）
+  // CORS 代理服务列表（备用方案）
+  const corsProxies = [
+    'https://api.allorigins.win/get?url=',
+    'https://cors-anywhere.herokuapp.com/',
+    'https://api.codetabs.com/v1/proxy?quest='
+  ];
+
+  // 从应用宝页面提取应用信息（使用 CORS 代理解决跨域问题）
   const fetchAppInfo = async (url: string): Promise<AppStoreInfo> => {
-    const response = await fetch(url, {
-      mode: 'cors',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    let lastError: Error | null = null;
+    
+    // 尝试多个代理服务
+    for (let i = 0; i < corsProxies.length; i++) {
+      try {
+        const proxy = corsProxies[i];
+        let proxyUrl: string;
+        let html: string;
+        
+        if (proxy.includes('allorigins')) {
+          // allorigins 返回 JSON 格式
+          proxyUrl = `${proxy}${encodeURIComponent(url)}`;
+          const response = await fetch(proxyUrl);
+          
+          if (!response.ok) {
+            throw new Error(`代理服务 ${i + 1} 请求失败: HTTP ${response.status}`);
+          }
+          
+          const data = await response.json();
+          if (!data.contents) {
+            throw new Error(`代理服务 ${i + 1} 返回数据为空`);
+          }
+          html = data.contents;
+        } else {
+          // 其他代理直接返回 HTML
+          proxyUrl = `${proxy}${url}`;
+          const response = await fetch(proxyUrl);
+          
+          if (!response.ok) {
+            throw new Error(`代理服务 ${i + 1} 请求失败: HTTP ${response.status}`);
+          }
+          
+          html = await response.text();
+        }
+        
+        // 如果成功获取到 HTML，跳出循环
+        if (html && html.length > 0) {
+          console.log(`✅ 使用代理服务 ${i + 1} 成功获取页面内容`);
+          return parseAppStoreHtml(html, url);
+        }
+        
+      } catch (error) {
+        console.warn(`⚠️ 代理服务 ${i + 1} 失败:`, error);
+        lastError = error as Error;
+        continue;
       }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
+    
+    // 所有代理都失败了
+    throw new Error(`所有代理服务都不可用。最后错误: ${lastError?.message || '未知错误'}`);
+  };
 
-    const html = await response.text();
+  // 解析应用宝 HTML 页面内容
+  const parseAppStoreHtml = (html: string, url: string): AppStoreInfo => {
     
     // 使用 DOMParser 解析 HTML
     const parser = new DOMParser();
@@ -243,6 +292,11 @@ export default function AppStoreDownload({ result, onClose }: AppStoreDownloadPr
               >
                 {loading ? '获取中...' : '获取信息'}
               </button>
+            </div>
+            <div className="hint-text" style={{ marginTop: '8px', fontSize: '12px', color: '#6c757d' }}>
+              💡 提示：请输入应用宝的应用详情页链接，格式如：https://sj.qq.com/appdetail/包名
+              <br />
+              ⚠️ 由于浏览器安全限制，使用代理服务获取数据，可能需要稍等片刻
             </div>
             {error && <p className="error-message">{error}</p>}
             <p className="hint-text">
