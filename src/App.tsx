@@ -205,6 +205,18 @@ export default function App() {
               <>
                 <h1>🔍 APK SDK 分析工具</h1>
                 <p className="subtitle">快速识别 Android 应用中的 SDK 和第三方库</p>
+                {/* 应用宝下载按钮 */}
+                {state === 'completed' && result && (
+                  <div className="subtitle-actions">
+                    <button 
+                      className="btn btn-sm btn-primary" 
+                      onClick={() => setShowAppStoreDialog(true)}
+                      style={{ marginTop: '12px' }}
+                    >
+                      📱 应用宝下载
+                    </button>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -214,9 +226,6 @@ export default function App() {
           <div className="header-actions">
             <button className="btn btn-sm btn-secondary" onClick={handleExport}>
               导出报告
-            </button>
-            <button className="btn btn-sm btn-secondary" onClick={() => setShowAppStoreDialog(true)}>
-              应用宝下载
             </button>
             <button className="btn btn-sm btn-secondary" onClick={handleReset}>
               重新分析
