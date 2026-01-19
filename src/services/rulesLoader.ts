@@ -36,7 +36,8 @@ export async function loadRules(): Promise<RulesBundle | null> {
 
     // 2. 从 public/ 目录加载
     console.log('⬇️  从服务器加载规则库...');
-    const response = await fetch('/rules-bundle.json');
+    // 使用相对路径，让 Vite 的 base 配置自动处理路径
+    const response = await fetch('./rules-bundle.json');
     if (!response.ok) {
       throw new Error(`加载失败: ${response.status} ${response.statusText}`);
     }
