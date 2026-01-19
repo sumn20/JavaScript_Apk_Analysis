@@ -3607,3 +3607,107 @@ body {
   margin-top: 4px;
   margin-bottom: 0;
 }
+
+/* ===== 应用宝下载对话框样式 ===== */
+.app-info-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.app-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.app-info-item .label {
+  font-weight: 500;
+  color: #495057;
+  min-width: 80px;
+}
+
+.app-info-item .value {
+  color: #212529;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.input-group .form-input {
+  flex: 1;
+}
+
+.input-group .button {
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.app-store-info {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  font-weight: 500;
+  color: #495057;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.info-row .value {
+  color: #212529;
+  text-align: right;
+  word-break: break-all;
+  margin-left: 12px;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-1px);
+}
+
+.button-primary:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button-secondary {
+  background: var(--light);
+  color: var(--dark);
+  border: 1px solid var(--border);
+}
+
+.button-secondary:hover {
+  background: #e5e7eb;
+}

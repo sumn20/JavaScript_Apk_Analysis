@@ -11,6 +11,7 @@ import FileUploader from './components/FileUploader';
 import AnalysisProgressComponent from './components/AnalysisProgress';
 import ResultTabs from './components/ResultTabs';
 import ReportExport from './components/ReportExport';
+import AppStoreDownload from './components/AppStoreDownload';
 import AnalysisHistory from './components/AnalysisHistory';
 import './styles/App.css';
 
@@ -37,6 +38,7 @@ export default function App() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
+  const [showAppStoreDialog, setShowAppStoreDialog] = useState(false);
 
   // 自动检测页脚信息框是否被遮挡
   useTextOverflowDetection({
@@ -213,6 +215,9 @@ export default function App() {
             <button className="btn btn-sm btn-secondary" onClick={handleExport}>
               导出报告
             </button>
+            <button className="btn btn-sm btn-secondary" onClick={() => setShowAppStoreDialog(true)}>
+              应用宝下载
+            </button>
             <button className="btn btn-sm btn-secondary" onClick={handleReset}>
               重新分析
             </button>
@@ -340,6 +345,11 @@ export default function App() {
       {/* 导出对话框 */}
       {showExportModal && result && (
         <ReportExport result={result} onClose={handleCloseExport} />
+      )}
+
+      {/* 应用宝下载对话框 */}
+      {showAppStoreDialog && result && (
+        <AppStoreDownload result={result} onClose={() => setShowAppStoreDialog(false)} />
       )}
     </div>
   );
