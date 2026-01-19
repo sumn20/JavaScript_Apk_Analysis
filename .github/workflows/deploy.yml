@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  schedule:
+    # 每天 UTC 2:00 (北京时间 10:00) 自动更新规则库
+    - cron: '0 2 * * *'
 
 jobs:
   build-and-deploy:
@@ -19,6 +22,13 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
+        
+    - name: Clone LibChecker Rules
+      run: |
+        echo "🔄 克隆最新的 LibChecker-Rules 仓库..."
+        git clone https://github.com/LibChecker/LibChecker-Rules.git ../LibChecker-Rules
+        echo "✅ 规则库克隆完成"
+        ls -la ../LibChecker-Rules/
         
     - name: Install dependencies
       run: npm ci

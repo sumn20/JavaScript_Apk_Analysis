@@ -14,6 +14,26 @@ const RULES_DIR = path.join(__dirname, '../../LibChecker-Rules');
 const CATEGORIES_FILE = path.join(__dirname, '../sdk-categories.json');
 const OUTPUT_FILE = path.join(__dirname, '../public/rules-bundle.json');
 
+// 备用规则库路径（用于不同的部署环境）
+const ALTERNATIVE_RULES_PATHS = [
+  path.join(__dirname, '../../LibChecker-Rules'),  // 本地开发
+  path.join(__dirname, '../../../LibChecker-Rules'), // GitHub Actions
+  path.join(process.cwd(), '../LibChecker-Rules'),   // 其他环境
+];
+
+/**
+ * 查找规则库目录
+ */
+function findRulesDirectory() {
+  for (const rulesPath of ALTERNATIVE_RULES_PATHS) {
+    if (fs.existsSync(rulesPath)) {
+      console.log(`✅ 找到规则库目录: ${rulesPath}`);
+      return rulesPath;
+    }
+  }
+  return null;
+}
+
 // 规则类型映射：将目录名映射到规则类型
 const RULE_TYPES = {
   'native-libs': 'native',           // 原生库（.so 文件）
@@ -30,16 +50,24 @@ const RULE_TYPES = {
  */
 async function buildRulesBundle() {
   console.log('🚀 开始构建规则库合并文件...');
-  console.log(`规则库目录: ${RULES_DIR}`);
+  
+  // 查找规则库目录
+  const rulesDir = findRulesDirectory();
+  if (!rulesDir) {
+    console.error('❌ 错误: 找不到规则库目录!');
+    console.error('请确保以下路径之一存在:');
+    ALTERNATIVE_RULES_PATHS.forEach(p => console.error(`  - ${p}`));
+    console.error('\n💡 解决方案:');
+    console.error('1. 本地开发: git clone https://github.com/LibChecker/LibChecker-Rules.git ../LibChecker-Rules');
+    console.error('2. GitHub Actions: 已自动处理');
+    process.exit(1);
+  }
+  
+  console.log(`规则库目录: ${rulesDir}`);
   console.log(`分类映射文件: ${CATEGORIES_FILE}`);
   console.log(`输出文件: ${OUTPUT_FILE}`);
 
   // 1. 检查必要文件是否存在
-  if (!fs.existsSync(RULES_DIR)) {
-    console.error(`❌ 错误: 规则库目录不存在: ${RULES_DIR}`);
-    process.exit(1);
-  }
-
   if (!fs.existsSync(CATEGORIES_FILE)) {
     console.error(`❌ 错误: 分类映射文件不存在: ${CATEGORIES_FILE}`);
     process.exit(1);
@@ -78,7 +106,7 @@ async function buildRulesBundle() {
 
   // 5. 遍历每个规则类型目录
   for (const [dirName, ruleType] of Object.entries(RULE_TYPES)) {
-    const dirPath = path.join(RULES_DIR, dirName);
+    const dirPath = path.join(rulesDir, dirName);
     if (!fs.existsSync(dirPath)) {
       console.warn(`⚠️  目录不存在: ${dirPath}`);
       continue;
