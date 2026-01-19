@@ -35,7 +35,7 @@ export default function ResultTabs({ result, onExport: _onExport, onReset }: Res
       </div>
 
       {/* 统计卡片 - 超紧凑单行展示 */}
-      <div className="result-stats-cards">
+      <div className="result-stats-cards" style={{ display: 'none' }}>
         <div className="stat-card-compact stat-card-primary">
           <span className="stat-label">识别的库</span>
           <span className="stat-value">{result.stats.total}</span>
