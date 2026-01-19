@@ -2,10 +2,8 @@
 // 应用宝下载对话框组件
 
 import { useState } from 'react';
-import { AnalysisResult } from '../types';
 
 interface AppStoreDownloadProps {
-  result: AnalysisResult | null;
   onClose: () => void;
 }
 
@@ -21,7 +19,7 @@ interface AppStoreInfo {
   tags: string;
 }
 
-export default function AppStoreDownload({ result, onClose }: AppStoreDownloadProps) {
+export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
   const [appStoreUrl, setAppStoreUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -240,35 +238,6 @@ export default function AppStoreDownload({ result, onClose }: AppStoreDownloadPr
 
         {/* 表单内容 */}
         <div className="modal-body">
-          {/* 当前应用信息 */}
-          <div className="form-group">
-            <label>当前分析的应用</label>
-            {result ? (
-              <div className="app-info-card">
-                <div className="app-info-item">
-                  <span className="label">应用名称:</span>
-                  <span className="value">未知</span>
-                </div>
-                <div className="app-info-item">
-                  <span className="label">包名:</span>
-                  <span className="value">{result.basic.packageName}</span>
-                </div>
-                <div className="app-info-item">
-                  <span className="label">版本:</span>
-                  <span className="value">{result.basic.versionName} ({result.basic.versionCode})</span>
-                </div>
-              </div>
-            ) : (
-              <div className="app-info-card">
-                <div className="app-info-item">
-                  <span className="value" style={{ color: '#6c757d', fontStyle: 'italic' }}>
-                    暂无分析结果，请先上传 APK 文件进行分析
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* 应用宝链接输入 */}
           <div className="form-group">
             <label htmlFor="appstore-url">应用宝链接</label>

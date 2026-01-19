@@ -358,7 +358,7 @@ export default function App() {
 
       {/* 应用宝下载对话框 */}
       {showAppStoreDialog && (
-        <AppStoreDownload result={result} onClose={() => setShowAppStoreDialog(false)} />
+        <AppStoreDownload onClose={() => setShowAppStoreDialog(false)} />
       )}
     </div>
   );
