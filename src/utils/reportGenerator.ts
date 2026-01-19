@@ -71,6 +71,10 @@ function generateHtmlReport(result: AnalysisResult): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APK 分析报告 - ${basic.packageName}</title>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -149,6 +153,17 @@ function generateHtmlReport(result: AnalysisResult): string {
       padding: 20px;
       border-radius: 8px;
       text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      color: white;
+      text-decoration: none;
     }
 
     .stat-card h3 {
@@ -166,6 +181,26 @@ function generateHtmlReport(result: AnalysisResult): string {
 
     .library-section {
       margin: 30px 0;
+      scroll-margin-top: 20px; /* 为锚点跳转留出顶部空间 */
+    }
+
+    .library-section:target h3 {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      animation: highlight 2s ease-out;
+    }
+
+    @keyframes highlight {
+      0% {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+        transform: scale(1.02);
+      }
+      100% {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: scale(1);
+      }
     }
 
     .library-item {
@@ -266,17 +301,17 @@ function generateHtmlReport(result: AnalysisResult): string {
         <h3>识别的库</h3>
         <div class="number">${stats.total}</div>
       </div>
-      ${Object.entries(stats.byCategory).map(([category, count]) => `
-        <div class="stat-card">
+      ${getSortedCategoryEntries(stats.byCategory).map(([category, count]) => `
+        <a href="#category-${category}" class="stat-card">
           <h3>${getCategoryLabel(category, result)}</h3>
           <div class="number">${count}</div>
-        </div>
+        </a>
       `).join('')}
     </div>
 
     <h2>📚 SDK 库列表</h2>
-    ${Object.entries(librariesByCategory).map(([category, libs]) => `
-      <div class="library-section">
+    ${getSortedCategoryEntries(librariesByCategory).map(([category, libs]) => `
+      <div class="library-section" id="category-${category}">
         <h3>${getCategoryIcon(category, result)} ${getCategoryLabel(category, result)} (${libs.length})</h3>
         ${libs.map(lib => `
           <div class="library-item">
@@ -365,5 +400,42 @@ function getCategoryLabel(category: string, result: AnalysisResult): string {
 function getCategoryIcon(category: string, result: AnalysisResult): string {
   const lib = result.libraries.find(l => l.category === category);
   return lib?.categoryIcon || '📦';
+}
+
+/**
+ * 按优先级排序分类条目
+ */
+function getSortedCategoryEntries<T>(categorizedData: Record<string, T>): [string, T][] {
+  // 定义分类的优先级顺序（与 sdk-categories.json 中的顺序一致）
+  const categoryOrder = [
+    'video',      // 音视频
+    'social',     // 社交分享
+    'network',    // 网络通信
+    'ads',        // 广告
+    'analytics',  // 数据分析
+    'push',       // 消息推送
+    'payment',    // 支付
+    'map',        // 地图定位
+    'image',      // 图片处理
+    'database',   // 数据存储
+    'security',   // 安全加密
+    'crash',      // 崩溃监测
+    'ai',         // 人工智能
+    'framework',  // 开发框架
+    'system',     // 系统功能
+    'other'       // 其他（保持在最后）
+  ];
+
+  return Object.entries(categorizedData).sort(([keyA], [keyB]) => {
+    const indexA = categoryOrder.indexOf(keyA);
+    const indexB = categoryOrder.indexOf(keyB);
+    
+    // 如果分类不在预定义列表中，放到最后
+    if (indexA === -1 && indexB === -1) return keyA.localeCompare(keyB);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    
+    return indexA - indexB;
+  });
 }
 

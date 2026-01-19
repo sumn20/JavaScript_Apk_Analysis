@@ -3,6 +3,16 @@
   "lastUpdated": "2025-11-05T17:03:01.261272",
   "description": "SDK分类映射表 - 基于规则库ID，为SDK进行分类。此文件独立于规则库存储，规则库更新时不会被覆盖。",
   "categories": {
+    "video": {
+      "label": "音视频",
+      "icon": "🎥",
+      "description": "视频播放器、音频处理、直播SDK、视频编解码"
+    },
+    "social": {
+      "label": "社交分享",
+      "icon": "👥",
+      "description": "社交登录、分享SDK、社交媒体集成"
+    },
     "network": {
       "label": "网络通信",
       "icon": "🌐",
@@ -32,16 +42,6 @@
       "label": "地图定位",
       "icon": "📍",
       "description": "地图服务、定位SDK、导航功能"
-    },
-    "social": {
-      "label": "社交分享",
-      "icon": "👥",
-      "description": "社交登录、分享SDK、社交媒体集成"
-    },
-    "video": {
-      "label": "音视频",
-      "icon": "🎥",
-      "description": "视频播放器、音频处理、直播SDK、视频编解码"
     },
     "image": {
       "label": "图片处理",

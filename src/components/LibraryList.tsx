@@ -62,10 +62,35 @@ export default function LibraryList({ libraries, categories: _categories }: Libr
         </button>
         {Object.entries(categorized)
           .sort(([keyA], [keyB]) => {
-            // 保持other在最后
-            if (keyA === 'other') return 1;
-            if (keyB === 'other') return -1;
-            return keyA.localeCompare(keyB);
+            // 定义分类的优先级顺序（与 sdk-categories.json 中的顺序一致）
+            const categoryOrder = [
+              'video',      // 音视频
+              'social',     // 社交分享
+              'network',    // 网络通信
+              'ads',        // 广告
+              'analytics',  // 数据分析
+              'push',       // 消息推送
+              'payment',    // 支付
+              'map',        // 地图定位
+              'image',      // 图片处理
+              'database',   // 数据存储
+              'security',   // 安全加密
+              'crash',      // 崩溃监测
+              'ai',         // 人工智能
+              'framework',  // 开发框架
+              'system',     // 系统功能
+              'other'       // 其他（保持在最后）
+            ];
+            
+            const indexA = categoryOrder.indexOf(keyA);
+            const indexB = categoryOrder.indexOf(keyB);
+            
+            // 如果分类不在预定义列表中，放到最后
+            if (indexA === -1 && indexB === -1) return keyA.localeCompare(keyB);
+            if (indexA === -1) return 1;
+            if (indexB === -1) return -1;
+            
+            return indexA - indexB;
           })
           .map(([category, libs]) => {
             const metadata = categoryMetadata[category] || { label: '其他', icon: '📦' };

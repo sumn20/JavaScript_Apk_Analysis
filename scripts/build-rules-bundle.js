@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 配置路径
-const RULES_DIR = path.join(__dirname, '../../LibChecker-Rules-4');
+const RULES_DIR = path.join(__dirname, '../../LibChecker-Rules');
 const CATEGORIES_FILE = path.join(__dirname, '../sdk-categories.json');
 const OUTPUT_FILE = path.join(__dirname, '../public/rules-bundle.json');
 
