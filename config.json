@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "APK SDK 分析工具",
+    "description": "快速识别 Android 应用中的 SDK 和第三方库",
+    "version": "1.0.0"
+  },
+  "footer": {
+    "projectUrl": "https://github.com/ShellMonster/JavaScript_Apk_Analysis",
+    "projectLabel": "查看源码",
+    "icp": {
+      "enabled": false,
+      "number": "12345678",
+      "url": "https://beian.miit.gov.cn/",
+      "label": "ICP 备案号"
+    },
+    "copyright": "© 2025 APK Analyzer. All rights reserved."
+  },
+  "rules": {
+    "bundleUrl": "https://raw.githubusercontent.com/LibChecker/LibChecker-Rules/master/",
+    "updateCheckInterval": 86400000
+  }
+}
