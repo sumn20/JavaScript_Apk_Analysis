@@ -11,8 +11,8 @@ export default function ContactMe({ onClose }: ContactMeProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // 微信二维码图片URL - 您需要替换为实际的二维码图片
-  const wechatQRCode = '/wechat-qr.png'; // 请将您的微信二维码放在public目录下
+  // 微信二维码图片URL - 您的微信二维码
+  const wechatQRCode = '/wechat-qr.jpg';
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -40,7 +40,7 @@ export default function ContactMe({ onClose }: ContactMeProps) {
                   <div className="qr-placeholder-content">
                     <div className="qr-placeholder-icon">📱</div>
                     <p>请将您的微信二维码图片</p>
-                    <p>命名为 <code>wechat-qr.png</code></p>
+                    <p>命名为 <code>wechat-qr.jpg</code></p>
                     <p>放置在 <code>public</code> 目录下</p>
                   </div>
                 </div>
