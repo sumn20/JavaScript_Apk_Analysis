@@ -6,6 +6,7 @@ import JSZip from 'jszip';
 export interface XapkInfo {
   mainApk: File;
   configApks: File[];
+  allApks: File[]; // 包含主APK和所有配置APK
   originalFileName: string;
 }
 
@@ -85,9 +86,12 @@ export async function parseXapk(xapkFile: File): Promise<XapkInfo> {
 
     console.log('✅ XAPK 解析完成！');
 
+    const allApks = [mainApk, ...configApks];
+
     return {
       mainApk,
       configApks,
+      allApks,
       originalFileName: xapkFile.name,
     };
   } catch (error) {

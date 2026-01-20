@@ -27,6 +27,80 @@ export interface ScanResult {
 }
 
 /**
+ * 扫描多个 APK 中的 SDK 库和组件（用于 XAPK）
+ * @param apkFiles - APK 文件数组
+ * @param mainManifest - 主 APK 的 Manifest 信息
+ * @returns 合并后的扫描结果
+ */
+export async function scanMultipleApks(
+  apkFiles: { file: File; isMain: boolean }[],
+  mainManifest: ParsedManifest
+): Promise<ScanResult> {
+  console.log(`🔍 开始扫描 ${apkFiles.length} 个 APK 文件...`);
+
+  const mergedNativeLibsMap = new Map<string, LibraryInfo>();
+  let totalNativeLibs = 0;
+
+  // 扫描每个 APK 文件
+  for (const { file, isMain } of apkFiles) {
+    console.log(`📦 扫描 ${isMain ? '主' : '配置'} APK: ${file.name}`);
+    
+    try {
+      const zip = await JSZip.loadAsync(file);
+      const { nativeLibsMap } = await scanNativeLibraries(zip);
+      
+      // 合并 Native 库信息
+      nativeLibsMap.forEach((libInfo, libName) => {
+        if (mergedNativeLibsMap.has(libName)) {
+          // 合并已存在的库信息
+          const existing = mergedNativeLibsMap.get(libName)!;
+          existing.count += libInfo.count;
+          existing.locations.push(...libInfo.locations.map(loc => `${file.name}:${loc}`));
+          
+          // 合并架构信息
+          libInfo.architectures.forEach(arch => {
+            if (!existing.architectures.includes(arch)) {
+              existing.architectures.push(arch);
+            }
+          });
+        } else {
+          // 新库，添加文件名前缀到位置信息
+          const newLibInfo: LibraryInfo = {
+            ...libInfo,
+            locations: libInfo.locations.map(loc => `${file.name}:${loc}`)
+          };
+          mergedNativeLibsMap.set(libName, newLibInfo);
+        }
+      });
+      
+      totalNativeLibs += nativeLibsMap.size;
+      console.log(`  ✓ 发现 ${nativeLibsMap.size} 个 Native 库`);
+    } catch (error) {
+      console.warn(`  ⚠️ 扫描 ${file.name} 失败:`, error);
+    }
+  }
+
+  const nativeLibs = Array.from(mergedNativeLibsMap.keys());
+  console.log(`✓ 总共扫描到 ${nativeLibs.length} 个唯一 Native 库 (来自 ${totalNativeLibs} 个库实例)`);
+
+  // 组件信息只从主 APK 获取
+  const { activities, services, providers, receivers } = mainManifest;
+  console.log(`✓ 从主 APK 扫描到 ${activities.length} 个 Activity`);
+  console.log(`✓ 从主 APK 扫描到 ${services.length} 个 Service`);
+  console.log(`✓ 从主 APK 扫描到 ${providers.length} 个 Provider`);
+  console.log(`✓ 从主 APK 扫描到 ${receivers.length} 个 Receiver`);
+
+  return {
+    nativeLibs,
+    nativeLibsMap: mergedNativeLibsMap,
+    activities,
+    services,
+    providers,
+    receivers,
+  };
+}
+
+/**
  * 扫描 APK 中的 SDK 库和组件
  * @param zip - JSZip 对象
  * @param manifest - 解析后的 Manifest 信息

@@ -3,7 +3,7 @@
 
 import JSZip from 'jszip';
 import { convertAxmlToXml, extractManifestInfo, extractComponents } from '../utils/axmlParser';
-import { scanApk, ScanResult } from './sdkScanner';
+import { scanApk, scanMultipleApks, ScanResult } from './sdkScanner';
 import { loadRules } from './rulesLoader';
 import { fuzzyMatchLibraryWithCache } from '../utils/fuzzyMatcher';
 import { parseXapk, isXapkFile } from './xapkParser';
@@ -24,8 +24,10 @@ export async function analyzeApk(
 
   try {
     let targetApkFile: File = file;
+    let xapkInfo: any = null;
+    let scanResult: ScanResult;
     
-    // 如果是 XAPK 文件，先解析提取主 APK
+    // 如果是 XAPK 文件，先解析提取所有 APK
     if (isXapkFile(file)) {
       onProgress?.({
         stage: 'extracting',
@@ -33,23 +35,21 @@ export async function analyzeApk(
         progress: 5,
       });
 
-      const xapkInfo = await parseXapk(file);
+      xapkInfo = await parseXapk(file);
       targetApkFile = xapkInfo.mainApk;
       console.log(`✓ XAPK 解析成功，主 APK: ${xapkInfo.mainApk.name}`);
-      
-      // 注意：目前我们只分析主 APK，配置 APK 通常只包含资源文件
-      // 如果需要分析配置 APK，可以在这里扩展逻辑
+      console.log(`✓ 配置 APK: ${xapkInfo.configApks.map((f: File) => f.name).join(', ')}`);
     }
 
-    // 阶段 1: 提取 APK 文件
+    // 阶段 1: 提取主 APK 文件
     onProgress?.({
       stage: 'extracting',
-      message: '正在提取 APK 文件...',
+      message: '正在提取主 APK 文件...',
       progress: 10,
     });
 
     const zip = await JSZip.loadAsync(targetApkFile);
-    console.log('✓ APK 文件提取成功');
+    console.log('✓ 主 APK 文件提取成功');
 
     // 阶段 2: 解析 AndroidManifest.xml
     onProgress?.({
@@ -81,12 +81,24 @@ export async function analyzeApk(
     // 阶段 3: 扫描 SDK 库和组件
     onProgress?.({
       stage: 'scanning',
-      message: '正在扫描 SDK 库和组件...',
+      message: xapkInfo ? '正在扫描所有 APK 中的 SDK 库和组件...' : '正在扫描 SDK 库和组件...',
       progress: 50,
     });
 
-    const scanResult = await scanApk(zip, parsedManifest);
-    console.log('✓ SDK 扫描完成');
+    if (xapkInfo) {
+      // XAPK: 扫描所有 APK 文件
+      const apkFiles = xapkInfo.allApks.map((apkFile: File) => ({
+        file: apkFile,
+        isMain: apkFile === xapkInfo.mainApk
+      }));
+      
+      scanResult = await scanMultipleApks(apkFiles, parsedManifest);
+      console.log('✓ XAPK 多文件 SDK 扫描完成');
+    } else {
+      // 单个 APK: 使用原有逻辑
+      scanResult = await scanApk(zip, parsedManifest);
+      console.log('✓ APK SDK 扫描完成');
+    }
 
     // 阶段 4: 加载规则库
     onProgress?.({
