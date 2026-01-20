@@ -12,6 +12,7 @@ import AnalysisProgressComponent from './components/AnalysisProgress';
 import ResultTabs from './components/ResultTabs';
 import ReportExport from './components/ReportExport';
 import AppStoreDownload from './components/AppStoreDownload';
+import GooglePlayDownload from './components/GooglePlayDownload';
 import AnalysisHistory from './components/AnalysisHistory';
 import './styles/App.css';
 
@@ -39,6 +40,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showAppStoreDialog, setShowAppStoreDialog] = useState(false);
+  const [showGooglePlayDialog, setShowGooglePlayDialog] = useState(false);
 
   // 自动检测页脚信息框是否被遮挡
   useTextOverflowDetection({
@@ -205,7 +207,7 @@ export default function App() {
               <>
                 <h1>🔍 APK SDK 分析工具</h1>
                 <p className="subtitle">快速识别 Android 应用中的 SDK 和第三方库</p>
-                {/* 应用宝下载按钮 - 首页显示，分析时隐藏 */}
+                {/* 下载按钮组 - 首页显示，分析时隐藏 */}
                 {(state === 'idle' || state === 'completed') && (
                   <div className="subtitle-actions">
                     <button 
@@ -213,6 +215,12 @@ export default function App() {
                       onClick={() => setShowAppStoreDialog(true)}
                     >
                       📱 应用宝下载
+                    </button>
+                    <button 
+                      className="btn btn-sm btn-success" 
+                      onClick={() => setShowGooglePlayDialog(true)}
+                    >
+                      🌐 Google Play 下载
                     </button>
                   </div>
                 )}
@@ -358,6 +366,11 @@ export default function App() {
       {/* 应用宝下载对话框 */}
       {showAppStoreDialog && (
         <AppStoreDownload onClose={() => setShowAppStoreDialog(false)} />
+      )}
+
+      {/* Google Play下载对话框 */}
+      {showGooglePlayDialog && (
+        <GooglePlayDownload onClose={() => setShowGooglePlayDialog(false)} />
       )}
     </div>
   );
