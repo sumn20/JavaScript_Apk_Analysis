@@ -3680,8 +3680,8 @@ body {
 }
 
 .google-play-download .parse-info,
-.google-play-download .download-page-info,
-.google-play-download .download-section,
+.google-play-download .search-page-info,
+.google-play-download .success-section,
 .google-play-download .error-section,
 .google-play-download .loading-section {
   margin-bottom: 20px;
@@ -3694,12 +3694,12 @@ body {
   background: #f8f9fa;
 }
 
-.google-play-download .download-page-info {
+.google-play-download .search-page-info {
   background: #f0f9ff;
   border-color: #0ea5e9;
 }
 
-.google-play-download .download-section {
+.google-play-download .success-section {
   background: #f0fdf4;
   border-color: #22c55e;
 }
@@ -3770,13 +3770,28 @@ body {
   font-family: monospace;
 }
 
-.google-play-download .download-btn {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600;
+.google-play-download .search-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #0ea5e9;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  margin: 8px 0;
+  transition: background-color 0.2s ease;
 }
 
-.google-play-download .download-note {
+.google-play-download .search-link:hover {
+  background: #0284c7;
+  color: white;
+}
+
+.google-play-download .success-info {
+  margin-bottom: 16px;
+}
+
+.google-play-download .success-note {
   margin-top: 16px;
   padding: 12px;
   background: #f9fafb;
@@ -3784,7 +3799,7 @@ body {
   font-size: 13px;
 }
 
-.google-play-download .download-note ul {
+.google-play-download .success-note ul {
   margin: 8px 0 0 16px;
   padding: 0;
 }

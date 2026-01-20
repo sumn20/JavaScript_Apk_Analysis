@@ -17,7 +17,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
   const [searchUrl, setSearchUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // 处理URL解析和跳转
+  // 处理URL解析并自动跳转
   const handleSearch = async () => {
     if (!inputUrl.trim()) {
       setError('请输入Google Play URL或包名');
@@ -38,22 +38,18 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
 
       setPlayInfo(parsed);
       
-      // 构建APKPure搜索页面URL
+      // 构建APKPure搜索页面URL并自动打开
       const apkpureSearchUrl = getAPKPureSearchUrl(parsed.packageName);
       setSearchUrl(apkpureSearchUrl);
+      
+      // 自动在新标签页打开APKPure搜索页面
+      window.open(apkpureSearchUrl, '_blank', 'noopener,noreferrer');
+      
       setState('success');
     } catch (err) {
       console.error('解析失败:', err);
       setError(err instanceof Error ? err.message : '解析失败，请重试');
       setState('error');
-    }
-  };
-
-  // 处理跳转到APKPure
-  const handleGoToAPKPure = () => {
-    if (searchUrl) {
-      // 在新标签页打开APKPure搜索页面
-      window.open(searchUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -104,8 +100,8 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
               onClick={handleSearch}
               disabled={state === 'parsing' || !inputUrl.trim()}
             >
-              {state === 'parsing' && '解析中...'}
-              {(state === 'idle' || state === 'error' || state === 'success') && '解析并跳转'}
+              {state === 'parsing' && '解析并跳转中...'}
+              {(state === 'idle' || state === 'error' || state === 'success') && '解析并自动跳转'}
             </button>
             
             {(state === 'error' || state === 'success') && (
@@ -145,23 +141,23 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
             </div>
           )}
 
-          {/* 跳转区域 */}
+          {/* 成功跳转提示 */}
           {state === 'success' && searchUrl && (
-            <div className="jump-section">
-              <h3>🔍 前往APKPure搜索</h3>
-              <div className="jump-info">
-                <p>已解析包名，点击按钮跳转到APKPure搜索页面。</p>
-                <button className="btn btn-success jump-btn" onClick={handleGoToAPKPure}>
-                  🔗 前往APKPure搜索
-                </button>
+            <div className="success-section">
+              <h3>✅ 跳转成功</h3>
+              <div className="success-info">
+                <p>已自动在新标签页打开APKPure搜索页面。</p>
+                <p>如果页面没有自动打开，请点击下面的链接：</p>
+                <a href={searchUrl} target="_blank" rel="noopener noreferrer" className="search-link">
+                  🔗 手动打开APKPure搜索页面
+                </a>
               </div>
-              <div className="jump-note">
-                <p>💡 提示：</p>
+              <div className="success-note">
+                <p>💡 接下来：</p>
                 <ul>
-                  <li>将在新标签页打开APKPure搜索页面</li>
-                  <li>在搜索结果中找到对应应用并下载</li>
-                  <li>下载完成后可以直接上传到本工具进行分析</li>
-                  <li>请确保从可信来源下载应用</li>
+                  <li>在APKPure搜索结果中找到对应的应用</li>
+                  <li>下载APK或XAPK文件</li>
+                  <li>将下载的文件上传到本工具进行分析</li>
                 </ul>
               </div>
             </div>
@@ -181,7 +177,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
           {state === 'parsing' && (
             <div className="loading-section">
               <div className="loading-spinner"></div>
-              <p>正在解析URL...</p>
+              <p>正在解析URL并打开APKPure搜索页面...</p>
             </div>
           )}
         </div>
