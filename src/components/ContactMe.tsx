@@ -11,8 +11,14 @@ export default function ContactMe({ onClose }: ContactMeProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // 微信二维码图片URL - 您的微信二维码
-  const wechatQRCode = `/wechat-qr.jpg?t=${Date.now()}`;
+  // 微信二维码图片URL - 根据环境使用正确的路径
+  const getImagePath = () => {
+    // 在生产环境中，base 是 /analysis/，所以需要加上这个前缀
+    const isProduction = window.location.hostname === 'sumn20.github.io';
+    return isProduction ? '/analysis/wechat-qr.jpg' : '/wechat-qr.jpg';
+  };
+  
+  const wechatQRCode = getImagePath();
 
   const handleImageLoad = () => {
     console.log('微信二维码加载成功');
