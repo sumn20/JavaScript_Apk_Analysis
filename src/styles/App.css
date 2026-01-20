@@ -3610,222 +3610,6 @@ body {
 }
 
 /* ===== 应用宝下载对话框样式 ===== */
-.app-info-card {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 6px;
-  padding: 12px;
-  margin-top: 8px;
-}
-
-.app-info-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-}
-
-.app-info-label {
-  font-weight: 500;
-  color: #495057;
-}
-
-.app-info-value {
-  color: #212529;
-  font-family: monospace;
-  font-size: 13px;
-}
-
-/* ===== Google Play下载对话框样式 ===== */
-.google-play-download {
-  max-width: 600px;
-  width: 90vw;
-}
-
-.google-play-download .input-section {
-  margin-bottom: 20px;
-}
-
-.google-play-download .url-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: border-color 0.2s ease;
-  margin-top: 8px;
-}
-
-.google-play-download .url-input:focus {
-  outline: none;
-  border-color: #4ade80;
-  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
-}
-
-.google-play-download .input-help {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.google-play-download .input-help ul {
-  margin: 4px 0 0 16px;
-  padding: 0;
-}
-
-.google-play-download .action-buttons {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.google-play-download .parse-info,
-.google-play-download .search-page-info,
-.google-play-download .success-section,
-.google-play-download .error-section,
-.google-play-download .loading-section {
-  margin-bottom: 20px;
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-.google-play-download .parse-info {
-  background: #f8f9fa;
-}
-
-.google-play-download .search-page-info {
-  background: #f0f9ff;
-  border-color: #0ea5e9;
-}
-
-.google-play-download .success-section {
-  background: #f0fdf4;
-  border-color: #22c55e;
-}
-
-.google-play-download .error-section {
-  background: #fef2f2;
-  border-color: #ef4444;
-}
-
-.google-play-download .loading-section {
-  background: #fffbeb;
-  border-color: #f59e0b;
-  text-align: center;
-}
-
-.google-play-download .info-item {
-  display: flex;
-  margin-bottom: 8px;
-}
-
-.google-play-download .info-label {
-  font-weight: 500;
-  color: #374151;
-  min-width: 80px;
-}
-
-.google-play-download .info-value {
-  color: #1f2937;
-  word-break: break-all;
-}
-
-.google-play-download .info-value a {
-  color: #0ea5e9;
-  text-decoration: none;
-  word-break: break-all;
-}
-
-.google-play-download .info-value a:hover {
-  text-decoration: underline;
-}
-
-.google-play-download .app-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.google-play-download .app-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-.google-play-download .app-details {
-  flex: 1;
-}
-
-.google-play-download .app-title {
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 4px;
-}
-
-.google-play-download .app-package {
-  font-size: 12px;
-  color: #6b7280;
-  font-family: monospace;
-}
-
-.google-play-download .search-link {
-  display: inline-block;
-  padding: 8px 16px;
-  background: #0ea5e9;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
-  margin: 8px 0;
-  transition: background-color 0.2s ease;
-}
-
-.google-play-download .search-link:hover {
-  background: #0284c7;
-  color: white;
-}
-
-.google-play-download .success-info {
-  margin-bottom: 16px;
-}
-
-.google-play-download .success-note {
-  margin-top: 16px;
-  padding: 12px;
-  background: #f9fafb;
-  border-radius: 6px;
-  font-size: 13px;
-}
-
-.google-play-download .success-note ul {
-  margin: 8px 0 0 16px;
-  padding: 0;
-}
-
-.google-play-download .loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #f3f4f6;
-  border-top: 3px solid #f59e0b;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 12px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.google-play-download .footer-note {
-  text-align: center;
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 16px;
-}
-
 /* 联系我按钮样式 */
 .contact-me-btn {
   background: none;
@@ -4090,7 +3874,7 @@ body {
   color: white;
 }
 
-/* 应用宝下载按钮 - 蓝色渐变 */
+/* 应用宝下载按钮 - 统一蓝色渐变 */
 .subtitle-actions .btn-primary {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -4101,13 +3885,13 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Google Play下载按钮 - 绿色渐变 */
+/* Google Play下载按钮 - 统一蓝色渐变 */
 .subtitle-actions .btn-success {
-  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .subtitle-actions .btn-success:hover {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
