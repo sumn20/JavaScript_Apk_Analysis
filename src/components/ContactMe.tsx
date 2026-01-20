@@ -42,7 +42,6 @@ export default function ContactMe({ onClose }: ContactMeProps) {
         <div className="modal-body">
           <div className="contact-section">
             <h3>🤝 添加微信好友</h3>
-            <p>扫描下方二维码或长按保存图片后在微信中识别：</p>
             
             <div className="qr-code-container">
               {!imageLoaded && !imageError && (
@@ -70,15 +69,6 @@ export default function ContactMe({ onClose }: ContactMeProps) {
                   onError={handleImageError}
                 />
               )}
-            </div>
-
-            <div className="contact-tips">
-              <h4>💡 使用提示：</h4>
-              <ul>
-                <li>手机微信扫一扫功能扫描二维码</li>
-                <li>或长按保存图片后在微信中识别</li>
-                <li>添加好友时请备注"APK分析工具"</li>
-              </ul>
             </div>
           </div>
         </div>
