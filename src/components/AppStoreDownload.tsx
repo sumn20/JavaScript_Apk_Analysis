@@ -26,17 +26,29 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
   const [appInfo, setAppInfo] = useState<AppStoreInfo | null>(null);
   const [downloading, setDownloading] = useState(false);
 
-  // 验证应用宝链接格式
-  const validateAppStoreUrl = (url: string): boolean => {
-    const pattern = /^https:\/\/sj\.qq\.com\/appdetail\/[a-zA-Z0-9._]+$/;
-    return pattern.test(url);
+  // 验证应用宝链接格式或包名
+  const validateAndProcessInput = (input: string): { isValid: boolean; url: string } => {
+    // 检查是否是完整的应用宝链接
+    const urlPattern = /^https:\/\/sj\.qq\.com\/appdetail\/[a-zA-Z0-9._]+$/;
+    if (urlPattern.test(input)) {
+      return { isValid: true, url: input };
+    }
+    
+    // 检查是否是包名格式（简单判断：包含点号且不是URL）
+    if (input.includes('.') && !input.startsWith('http')) {
+      // 构建应用宝链接
+      const url = `https://sj.qq.com/appdetail/${input}`;
+      return { isValid: true, url };
+    }
+    
+    return { isValid: false, url: '' };
   };
 
   // CORS 代理服务列表（备用方案）
   const corsProxies = [
+    'https://api.codetabs.com/v1/proxy?quest=',
     'https://api.allorigins.win/get?url=',
     'https://cors-anywhere.herokuapp.com/',
-    'https://api.codetabs.com/v1/proxy?quest=',
     'https://thingproxy.freeboard.io/fetch/',
     'https://cors.bridged.cc/',
     'https://yacdn.org/proxy/',
@@ -188,12 +200,13 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
   // 处理获取应用信息
   const handleFetchInfo = async () => {
     if (!appStoreUrl.trim()) {
-      setError('请输入应用宝链接');
+      setError('请输入应用宝链接或包名');
       return;
     }
 
-    if (!validateAppStoreUrl(appStoreUrl.trim())) {
-      setError('请输入有效的应用宝链接格式：https://sj.qq.com/appdetail/包名');
+    const validation = validateAndProcessInput(appStoreUrl.trim());
+    if (!validation.isValid) {
+      setError('请输入有效的应用宝链接或包名格式');
       return;
     }
 
@@ -202,11 +215,11 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
     setAppInfo(null);
 
     try {
-      const info = await fetchAppInfo(appStoreUrl.trim());
+      const info = await fetchAppInfo(validation.url);
       setAppInfo(info);
     } catch (err) {
       console.error('获取应用信息失败:', err);
-      setError(err instanceof Error ? err.message : '获取应用信息失败，请检查链接是否正确');
+      setError(err instanceof Error ? err.message : '获取应用信息失败，请检查输入是否正确');
     } finally {
       setLoading(false);
     }
@@ -259,9 +272,9 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
 
         {/* 表单内容 */}
         <div className="modal-body">
-          {/* 应用宝链接输入 */}
+          {/* 应用宝链接或包名输入 */}
           <div className="form-group">
-            <label htmlFor="appstore-url">应用宝链接</label>
+            <label htmlFor="appstore-url">应用宝链接或包名</label>
             <div className="input-group">
               <input
                 id="appstore-url"
@@ -272,7 +285,7 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
                   setAppStoreUrl(e.target.value);
                   setError('');
                 }}
-                placeholder="https://sj.qq.com/appdetail/com.tencent.mobileqq"
+                placeholder="https://sj.qq.com/appdetail/com.tencent.mobileqq 或 com.tencent.mobileqq"
                 disabled={loading}
               />
               <button 
@@ -284,13 +297,13 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
               </button>
             </div>
             <div className="hint-text" style={{ marginTop: '8px', fontSize: '12px', color: '#6c757d' }}>
-              💡 提示：请输入应用宝的应用详情页链接，格式如：https://sj.qq.com/appdetail/包名
+              💡 提示：支持输入应用宝链接或直接输入包名
               <br />
               ⚠️ 由于浏览器安全限制，使用代理服务获取数据，可能需要稍等片刻
             </div>
             {error && <p className="error-message">{error}</p>}
             <p className="hint-text">
-              请输入应用宝的应用详情页链接，例如：https://sj.qq.com/appdetail/com.tencent.mobileqq
+              请输入应用宝的应用详情页链接或包名，例如：https://sj.qq.com/appdetail/com.tencent.mobileqq 或 com.tencent.mobileqq
             </p>
           </div>
 
