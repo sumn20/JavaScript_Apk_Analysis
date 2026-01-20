@@ -44,18 +44,18 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
     return { isValid: false, url: '' };
   };
 
-  // CORS 代理服务列表（备用方案）
+  // CORS 代理服务列表（已测试成功的排在前面）
   const corsProxies = [
+    'https://crossorigin.me/',
+    'https://cors.bridged.cc/',
+    'https://proxy.cors.sh/',
     'https://api.codetabs.com/v1/proxy?quest=',
     'https://api.allorigins.win/get?url=',
     'https://cors-anywhere.herokuapp.com/',
     'https://thingproxy.freeboard.io/fetch/',
-    'https://cors.bridged.cc/',
     'https://yacdn.org/proxy/',
     'https://api.proxify.io?url=',
-    'https://crossorigin.me/',
-    'https://cors-proxy.htmldriven.com/?url=',
-    'https://proxy.cors.sh/'
+    'https://cors-proxy.htmldriven.com/?url='
   ];
 
   // 从应用宝页面提取应用信息（使用 CORS 代理解决跨域问题）
