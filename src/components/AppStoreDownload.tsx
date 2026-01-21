@@ -302,6 +302,9 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
               ⚠️ 由于浏览器安全限制，使用代理服务获取数据，可能需要稍等片刻
             </div>
             {error && <p className="error-message">{error}</p>}
+            <p className="hint-text">
+              请输入应用宝的应用详情页链接或包名，例如：https://sj.qq.com/appdetail/com.tencent.mobileqq 或 com.tencent.mobileqq
+            </p>
           </div>
 
           {/* 应用信息显示 */}
