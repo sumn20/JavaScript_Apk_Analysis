@@ -213,16 +213,16 @@ export default function App() {
                 {(state === 'idle' || state === 'completed') && (
                   <div className="subtitle-actions">
                     <button 
+                      className="btn btn-sm btn-success" 
+                      onClick={() => setShowGooglePlayDialog(true)}
+                    >
+                      🌐 APKPure下载(推荐)
+                    </button>
+                    <button 
                       className="btn btn-sm btn-primary" 
                       onClick={() => setShowAppStoreDialog(true)}
                     >
                       📱 应用宝下载
-                    </button>
-                    <button 
-                      className="btn btn-sm btn-success" 
-                      onClick={() => setShowGooglePlayDialog(true)}
-                    >
-                      🌐 Google Play 下载
                     </button>
                   </div>
                 )}

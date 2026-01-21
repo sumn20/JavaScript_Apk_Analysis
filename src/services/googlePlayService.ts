@@ -7,18 +7,20 @@ export interface GooglePlayInfo {
 }
 
 /**
- * 从Google Play URL中提取包名
- * @param url - Google Play URL
+ * 从Google Play URL或应用宝URL中提取包名
+ * @param url - Google Play URL或应用宝URL
  * @returns 包名信息
  */
 export function parseGooglePlayUrl(url: string): GooglePlayInfo | null {
   try {
-    // 支持多种Google Play URL格式
+    // 支持多种URL格式
     const patterns = [
       // https://play.google.com/store/search?q=com.purpur.ohio&c=apps&hl=zh-CN
       /[?&]q=([a-zA-Z0-9._]+)/,
       // https://play.google.com/store/apps/details?id=com.purpur.ohio
       /[?&]id=([a-zA-Z0-9._]+)/,
+      // 应用宝URL格式：https://sj.qq.com/appdetail/com.tencent.mobileqq
+      /https:\/\/sj\.qq\.com\/appdetail\/([a-zA-Z0-9._]+)/,
       // 直接包名格式
       /^([a-zA-Z0-9._]+)$/
     ];
@@ -39,7 +41,7 @@ export function parseGooglePlayUrl(url: string): GooglePlayInfo | null {
 
     return null;
   } catch (error) {
-    console.error('解析Google Play URL失败:', error);
+    console.error('解析URL失败:', error);
     return null;
   }
 }
