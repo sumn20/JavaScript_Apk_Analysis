@@ -142,30 +142,18 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
           )}
 
           {/* APKPure链接信息 */}
-          {(downloadUrl || searchUrl) && (
+          {searchUrl && (
             <div className="form-group">
-              <label>APKPure 下载链接</label>
+              <label>APKPure 搜索链接</label>
               <div className="app-store-info">
-                {downloadUrl && (
-                  <div className="info-row">
-                    <span className="label">直接下载：</span>
-                    <span className="value">
-                      <a href={downloadUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'none' }}>
-                        {downloadUrl}
-                      </a>
-                    </span>
-                  </div>
-                )}
-                {searchUrl && (
-                  <div className="info-row">
-                    <span className="label">手动搜索：</span>
-                    <span className="value">
-                      <a href={searchUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'none' }}>
-                        {searchUrl}
-                      </a>
-                    </span>
-                  </div>
-                )}
+                <div className="info-row">
+                  <span className="label">手动搜索：</span>
+                  <span className="value">
+                    <a href={searchUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'none' }}>
+                      {searchUrl}
+                    </a>
+                  </span>
+                </div>
               </div>
               <div className="hint-text" style={{ marginTop: '8px', fontSize: '12px', color: '#6c757d' }}>
                 💡 获取应用信息后，点击下载按钮进行下载
