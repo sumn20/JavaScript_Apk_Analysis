@@ -242,8 +242,6 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
       link.click();
       document.body.removeChild(link);
 
-      // 显示成功提示
-      alert(`开始下载 ${appInfo.name} v${appInfo.version}`);
     } catch (err) {
       console.error('下载失败:', err);
       setError('下载失败，请重试');
@@ -336,12 +334,6 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
                   <span className="label">标签:</span>
                   <span className="value">{appInfo.tags}</span>
                 </div>
-                <div className="info-row">
-                  <span className="label">MD5:</span>
-                  <span className="value" style={{ fontFamily: 'monospace', fontSize: '0.9em' }}>
-                    {appInfo.md5}
-                  </span>
-                </div>
               </div>
             </div>
           )}
@@ -358,7 +350,7 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
               onClick={handleDownload}
               disabled={downloading}
             >
-              {downloading ? '下载中...' : '下载 APK'}
+              {downloading ? '下载中...' : '下载 APP'}
             </button>
           )}
         </div>
