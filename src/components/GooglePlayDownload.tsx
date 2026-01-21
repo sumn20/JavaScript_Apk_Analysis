@@ -18,7 +18,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // 处理URL解析并自动跳转
+  // 处理URL解析
   const handleSearch = async () => {
     if (!inputUrl.trim()) {
       setError('请输入Google Play URL、应用宝URL或包名');
@@ -47,15 +47,20 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
       const apkpureDownloadUrl = `https://d.apkpure.com/b/XAPK/${parsed.packageName}?version=latest`;
       setDownloadUrl(apkpureDownloadUrl);
       
-      // 自动在新标签页打开APKPure直接下载链接
-      window.open(apkpureDownloadUrl, '_blank', 'noopener,noreferrer');
-      
       setState('success');
     } catch (err) {
       console.error('解析失败:', err);
       setError(err instanceof Error ? err.message : '解析失败，请重试');
       setState('error');
     }
+  };
+
+  // 处理下载APK
+  const handleDownload = () => {
+    if (!downloadUrl) return;
+
+    // 在新标签页打开APKPure直接下载链接
+    window.open(downloadUrl, '_blank', 'noopener,noreferrer');
   };
 
   // 重置状态
@@ -95,7 +100,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
                 onClick={handleSearch}
                 disabled={state === 'parsing' || !inputUrl.trim()}
               >
-                {state === 'parsing' ? '解析并跳转中...' : '获取信息'}
+                {state === 'parsing' ? '解析中...' : '获取信息'}
               </button>
             </div>
             <div className="hint-text" style={{ marginTop: '8px', fontSize: '12px', color: '#6c757d' }}>
@@ -163,7 +168,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
                 )}
               </div>
               <div className="hint-text" style={{ marginTop: '8px', fontSize: '12px', color: '#6c757d' }}>
-                💡 已自动打开直接下载链接，如果无法下载请点击手动搜索链接
+                💡 获取应用信息后，点击下载按钮进行下载
               </div>
             </div>
           )}
@@ -175,7 +180,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
             <div className="form-group">
               <div style={{ textAlign: 'center', padding: '20px' }}>
                 <div className="loading-spinner" style={{ width: '32px', height: '32px', border: '3px solid #f3f4f6', borderTop: '3px solid #667eea', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 12px' }}></div>
-                <p>正在解析URL并打开APKPure下载页面...</p>
+                <p>正在解析URL...</p>
               </div>
             </div>
           )}
@@ -186,6 +191,14 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
           <button className="button button-secondary" onClick={onClose}>
             关闭
           </button>
+          {downloadUrl && (
+            <button 
+              className="button button-primary"
+              onClick={handleDownload}
+            >
+              下载 APK
+            </button>
+          )}
         </div>
       </div>
     </div>
