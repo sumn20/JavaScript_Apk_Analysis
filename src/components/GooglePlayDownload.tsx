@@ -21,7 +21,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
   // 处理URL解析
   const handleSearch = async () => {
     if (!inputUrl.trim()) {
-      setError('请输入Google Play URL、应用宝URL或包名');
+      setError('请输入Google Play URL或包名');
       return;
     }
 
@@ -84,7 +84,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
         <div className="modal-body">
           {/* 输入区域 */}
           <div className="form-group">
-            <label htmlFor="play-url">Google Play / 应用宝 URL 或包名：</label>
+            <label htmlFor="play-url">Google Play URL 或包名：</label>
             <div className="input-group">
               <input
                 id="play-url"
@@ -92,7 +92,7 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
                 className={`form-input ${error ? 'input-error' : ''}`}
                 value={inputUrl}
                 onChange={(e) => setInputUrl(e.target.value)}
-                placeholder="例如：https://play.google.com/store/apps/details?id=com.android.chrome 或 https://sj.qq.com/appdetail/com.tencent.mobileqq 或 com.android.chrome"
+                placeholder="例如：https://play.google.com/store/apps/details?id=com.android.chrome 或 com.android.chrome"
                 disabled={state === 'parsing'}
               />
               <button
@@ -108,7 +108,6 @@ export default function GooglePlayDownload({ onClose }: GooglePlayDownloadProps)
               <ul>
                 <li>Google Play 搜索链接</li>
                 <li>Google Play 应用详情链接</li>
-                <li>应用宝应用详情链接</li>
                 <li>直接输入包名</li>
               </ul>
             </div>
