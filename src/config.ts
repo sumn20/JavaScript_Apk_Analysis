@@ -71,7 +71,10 @@ export async function loadConfig(): Promise<AppConfig> {
   }
 
   try {
-    const response = await fetch('/config.json');
+    // 根据环境动态构建配置文件路径
+    const basePath = import.meta.env.PROD ? '/analysis/' : '/';
+    const configUrl = `${basePath}config.json`;
+    const response = await fetch(configUrl);
 
     if (!response.ok) {
       console.warn(`Failed to load config: ${response.status} ${response.statusText}, using default config`);
@@ -83,7 +86,7 @@ export async function loadConfig(): Promise<AppConfig> {
     cachedConfig = mergeConfig(DEFAULT_CONFIG, config);
     return cachedConfig;
   } catch (error) {
-    console.warn('Failed to load /config.json:', error);
+    console.warn('Failed to load config.json:', error);
     console.warn('Using default config');
     cachedConfig = DEFAULT_CONFIG;
     return DEFAULT_CONFIG;
