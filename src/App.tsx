@@ -314,44 +314,51 @@ export default function App() {
         {config && (
           <>
             <div className="footer-content">
-              {/* 项目链接 - 显示规则库作为"基于" */}
-              {config.footer.links && config.footer.links.length > 0 && (
-                <div className="footer-project">
-                  <p>
-                    基于{' '}
-                    <a
-                      href={config.footer.links[0].url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={config.footer.links[0].url}
-                    >
-                      {config.footer.links[0].label}
-                    </a>{' '}
-                    | 支持识别 2800+ SDK |{' '}
-                    {/* 查看源码链接 */}
-                    {config.footer.projectUrl && config.footer.projectLabel && (
-                      <>
-                        <a
-                          href={config.footer.projectUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title={config.footer.projectUrl}
-                        >
-                          {config.footer.projectLabel}
-                        </a>{' '}
-                        |{' '}
-                      </>
-                    )}
-                    <button
-                      className="contact-me-btn"
-                      onClick={() => setShowContactMe(true)}
-                      title="联系开发者"
-                    >
-                      联系我
-                    </button>
-                  </p>
-                </div>
-              )}
+              {/* 项目链接 */}
+              <div className="footer-project">
+                <p>
+                  {/* 如果有规则库链接，显示"基于规则库" */}
+                  {config.footer.links && config.footer.links.length > 0 ? (
+                    <>
+                      基于{' '}
+                      <a
+                        href={config.footer.links[0].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={config.footer.links[0].url}
+                      >
+                        {config.footer.links[0].label}
+                      </a>{' '}
+                      | 支持识别 2800+ SDK |{' '}
+                    </>
+                  ) : (
+                    <>支持识别 2800+ SDK |{' '}</>
+                  )}
+                  
+                  {/* 查看源码链接 */}
+                  {config.footer.projectUrl && config.footer.projectLabel && (
+                    <>
+                      <a
+                        href={config.footer.projectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={config.footer.projectUrl}
+                      >
+                        {config.footer.projectLabel}
+                      </a>{' '}
+                      |{' '}
+                    </>
+                  )}
+                  
+                  <button
+                    className="contact-me-btn"
+                    onClick={() => setShowContactMe(true)}
+                    title="联系开发者"
+                  >
+                    联系我
+                  </button>
+                </p>
+              </div>
 
               {/* ICP 备案信息 - 只有启用且有值才显示 */}
               {config.footer.icp?.enabled &&
