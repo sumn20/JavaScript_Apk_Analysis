@@ -314,20 +314,34 @@ export default function App() {
         {config && (
           <>
             <div className="footer-content">
-              {/* 项目链接 - 如果配置了 URL 才显示 */}
-              {config.footer.projectUrl && config.footer.projectLabel && (
+              {/* 项目链接 - 显示规则库作为"基于" */}
+              {config.footer.links && config.footer.links.length > 0 && (
                 <div className="footer-project">
                   <p>
                     基于{' '}
                     <a
-                      href={config.footer.projectUrl}
+                      href={config.footer.links[0].url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      title={config.footer.projectUrl}
+                      title={config.footer.links[0].url}
                     >
-                      {config.footer.projectLabel}
+                      {config.footer.links[0].label}
                     </a>{' '}
                     | 支持识别 2800+ SDK |{' '}
+                    {/* 查看源码链接 */}
+                    {config.footer.projectUrl && config.footer.projectLabel && (
+                      <>
+                        <a
+                          href={config.footer.projectUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={config.footer.projectUrl}
+                        >
+                          {config.footer.projectLabel}
+                        </a>{' '}
+                        |{' '}
+                      </>
+                    )}
                     <button
                       className="contact-me-btn"
                       onClick={() => setShowContactMe(true)}
