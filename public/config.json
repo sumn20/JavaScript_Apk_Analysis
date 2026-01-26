@@ -7,6 +7,12 @@
   "footer": {
     "projectUrl": "https://github.com/sumn20/analysis",
     "projectLabel": "查看源码",
+    "links": [
+      {
+        "label": "规则库",
+        "url": "https://github.com/LibChecker/LibChecker-Rules"
+      }
+    ],
     "icp": {
       "enabled": false,
       "number": "12345678",
