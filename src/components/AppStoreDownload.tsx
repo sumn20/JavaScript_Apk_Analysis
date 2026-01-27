@@ -153,39 +153,45 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
     return html;
   };
 
-  // 从应用宝页面提取应用信息（使用并发 CORS 代理提升速度）
+  // 从应用宝页面提取应用信息（使用并发竞速 CORS 代理提升速度）
   const fetchAppInfo = async (url: string): Promise<AppStoreInfo> => {
-    console.log('🚀 开始并发请求多个代理服务...');
+    console.log('🚀 开始并发竞速请求多个代理服务...');
     
-    // 创建所有代理的并发请求，包装成统一的Promise格式
-    const proxyPromises = corsProxies.map((proxy, index) => 
-      fetchWithProxy(proxy, url, index)
-        .then(html => ({ success: true, html, index }))
-        .catch(error => {
-          console.warn(`⚠️ 代理服务 ${index + 1} 失败:`, error);
-          return { success: false, error, index };
-        })
-    );
-    
-    try {
-      // 等待所有请求完成
-      const results = await Promise.all(proxyPromises);
+    return new Promise((resolve, reject) => {
+      let completed = false;
+      let failedCount = 0;
+      const totalProxies = corsProxies.length;
       
-      // 找到第一个成功的结果
-      const successResult = results.find(result => result.success);
-      
-      if (successResult && 'html' in successResult) {
-        console.log(`🎉 代理服务 ${successResult.index + 1} 首先成功返回，开始解析页面内容`);
-        return parseAppStoreHtml(successResult.html, url);
-      }
-      
-      // 所有代理都失败了
-      console.error('❌ 所有代理服务都失败了');
-      throw new Error(`所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。`);
-    } catch (error) {
-      console.error('❌ 请求过程中发生错误:', error);
-      throw new Error(`所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。`);
-    }
+      // 启动所有代理请求
+      corsProxies.forEach((proxy, index) => {
+        fetchWithProxy(proxy, url, index)
+          .then(html => {
+            if (!completed) {
+              completed = true;
+              console.log(`🎉 代理服务 ${index + 1} 率先成功返回，开始解析页面内容`);
+              try {
+                const result = parseAppStoreHtml(html, url);
+                resolve(result);
+              } catch (parseError) {
+                console.error(`❌ 代理服务 ${index + 1} 解析失败:`, parseError);
+                // 解析失败，继续等待其他代理
+                completed = false;
+                failedCount++;
+                if (failedCount >= totalProxies) {
+                  reject(new Error('所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。'));
+                }
+              }
+            }
+          })
+          .catch(error => {
+            console.warn(`⚠️ 代理服务 ${index + 1} 失败:`, error);
+            failedCount++;
+            if (failedCount >= totalProxies && !completed) {
+              reject(new Error('所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。'));
+            }
+          });
+      });
+    });
   };
 
   // 解析应用宝 HTML 页面内容
