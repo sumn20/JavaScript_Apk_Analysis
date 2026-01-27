@@ -53,72 +53,92 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
     'https://proxy.cors.sh/',
   ];
 
-  // 从应用宝页面提取应用信息（使用 CORS 代理解决跨域问题）
-  const fetchAppInfo = async (url: string): Promise<AppStoreInfo> => {
-    let lastError: Error | null = null;
+  // 单个代理请求函数
+  const fetchWithProxy = async (proxy: string, url: string, index: number): Promise<string> => {
+    let proxyUrl: string;
+    let html: string;
     
-    // 尝试多个代理服务
-    for (let i = 0; i < corsProxies.length; i++) {
-      try {
-        const proxy = corsProxies[i];
-        let proxyUrl: string;
-        let html: string;
-        
-        if (proxy.includes('allorigins')) {
-          // allorigins 返回 JSON 格式
-          proxyUrl = `${proxy}${encodeURIComponent(url)}`;
-          const response = await fetch(proxyUrl);
-          
-          if (!response.ok) {
-            throw new Error(`代理服务 ${i + 1} 请求失败: HTTP ${response.status}`);
-          }
-          
-          const data = await response.json();
-          if (!data.contents) {
-            throw new Error(`代理服务 ${i + 1} 返回数据为空`);
-          }
-          html = data.contents;
-        } else if (proxy.includes('codetabs') || proxy.includes('proxify')) {
-          // codetabs 和 proxify 使用 quest/url 参数
-          proxyUrl = `${proxy}${encodeURIComponent(url)}`;
-          const response = await fetch(proxyUrl);
-          
-          if (!response.ok) {
-            throw new Error(`代理服务 ${i + 1} 请求失败: HTTP ${response.status}`);
-          }
-          
-          html = await response.text();
-        } else {
-          // 其他代理直接拼接URL
-          proxyUrl = `${proxy}${url}`;
-          const response = await fetch(proxyUrl, {
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-            }
-          });
-          
-          if (!response.ok) {
-            throw new Error(`代理服务 ${i + 1} 请求失败: HTTP ${response.status}`);
-          }
-          
-          html = await response.text();
-        }
-        
-        // 如果成功获取到 HTML，跳出循环
-        if (html && html.length > 0) {
-          console.log(`✅ 使用代理服务 ${i + 1} 成功获取页面内容`);
-          return parseAppStoreHtml(html, url);
-        }
-        
-      } catch (error) {
-        console.warn(`⚠️ 代理服务 ${i + 1} 失败:`, error);
-        lastError = error as Error;
-        continue;
+    if (proxy.includes('allorigins')) {
+      // allorigins 返回 JSON 格式
+      proxyUrl = `${proxy}${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      
+      if (!response.ok) {
+        throw new Error(`代理服务 ${index + 1} 请求失败: HTTP ${response.status}`);
       }
+      
+      const data = await response.json();
+      if (!data.contents) {
+        throw new Error(`代理服务 ${index + 1} 返回数据为空`);
+      }
+      html = data.contents;
+    } else if (proxy.includes('codetabs') || proxy.includes('proxify')) {
+      // codetabs 和 proxify 使用 quest/url 参数
+      proxyUrl = `${proxy}${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      
+      if (!response.ok) {
+        throw new Error(`代理服务 ${index + 1} 请求失败: HTTP ${response.status}`);
+      }
+      
+      html = await response.text();
+    } else {
+      // 其他代理直接拼接URL
+      proxyUrl = `${proxy}${url}`;
+      const response = await fetch(proxyUrl, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`代理服务 ${index + 1} 请求失败: HTTP ${response.status}`);
+      }
+      
+      html = await response.text();
     }
     
-    // 所有代理都失败了
-    throw new Error(`所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。最后错误: ${lastError?.message || '未知错误'}`);
+    if (!html || html.length === 0) {
+      throw new Error(`代理服务 ${index + 1} 返回空内容`);
+    }
+    
+    console.log(`✅ 代理服务 ${index + 1} 成功返回内容`);
+    return html;
+  };
+
+  // 从应用宝页面提取应用信息（使用并发 CORS 代理提升速度）
+  const fetchAppInfo = async (url: string): Promise<AppStoreInfo> => {
+    console.log('🚀 开始并发请求多个代理服务...');
+    
+    // 创建所有代理的并发请求，包装成统一的Promise格式
+    const proxyPromises = corsProxies.map((proxy, index) => 
+      fetchWithProxy(proxy, url, index)
+        .then(html => ({ success: true, html, index }))
+        .catch(error => {
+          console.warn(`⚠️ 代理服务 ${index + 1} 失败:`, error);
+          return { success: false, error, index };
+        })
+    );
+    
+    try {
+      // 等待所有请求完成
+      const results = await Promise.all(proxyPromises);
+      
+      // 找到第一个成功的结果
+      const successResult = results.find(result => result.success);
+      
+      if (successResult && 'html' in successResult) {
+        console.log(`🎉 代理服务 ${successResult.index + 1} 首先成功返回，开始解析页面内容`);
+        return parseAppStoreHtml(successResult.html, url);
+      }
+      
+      // 所有代理都失败了
+      console.error('❌ 所有代理服务都失败了');
+      throw new Error(`所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。`);
+    } catch (error) {
+      console.error('❌ 请求过程中发生错误:', error);
+      throw new Error(`所有代理服务都不可用，无法访问应用宝页面。请检查网络连接或稍后重试。`);
+    }
   };
 
   // 解析应用宝 HTML 页面内容
