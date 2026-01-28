@@ -76,7 +76,7 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
   };
 
   // 单个代理请求函数
-  const fetchWithProxy = async (proxy: string, url: string, index: number): Promise<string> => {
+  const fetchWithProxy = async (proxy: string, url: string): Promise<string> => {
     const proxyName = getProxyName(proxy);
     let proxyUrl: string;
     let html: string;
@@ -181,7 +181,7 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
       // 启动所有代理请求
       corsProxies.forEach((proxy, index) => {
         const proxyName = getProxyName(proxy);
-        fetchWithProxy(proxy, url, index)
+        fetchWithProxy(proxy, url)
           .then(html => {
             if (!completed) {
               completed = true;
