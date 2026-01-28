@@ -179,7 +179,7 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
       const totalProxies = corsProxies.length;
       
       // 启动所有代理请求
-      corsProxies.forEach((proxy, index) => {
+      corsProxies.forEach((proxy) => {
         const proxyName = getProxyName(proxy);
         fetchWithProxy(proxy, url)
           .then(html => {
