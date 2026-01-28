@@ -51,6 +51,7 @@ export default function AppStoreDownload({ onClose }: AppStoreDownloadProps) {
     'https://api.cors.lol/?url=',
     
     // 🔄 备用代理（可能间歇性可用）
+    'https://corsproxy.io/?key=4a832400&url=',
     'https://api.allorigins.win/get?url=',
     'https://crossorigin.me/',
     'https://cors.bridged.cc/',
